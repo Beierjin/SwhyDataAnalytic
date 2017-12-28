@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <!--允许全屏-->
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <script src="/static/js/flexible_css.debug.js"></script>
+        <script src="/static/js/flexible.debug.js"></script>
+        <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <link rel="apple-touch-icon" href="favicon.png">
+        <link rel="Shortcut Icon" href="favicon.png" type="image/x-icon">
+        <title>申万宏源FICC</title>
+        <link href="/static/css/quotes.css" rel="stylesheet" type="text/css">
+        <script src="//g.alicdn.com/mtb/lib-aa/0.0.33/??aa.js,dirty.js"></script>
+
+        <style>
+            html,body{
+                height: 100vh;
+                background-color: #050505;
+            }
+        </style>
+        <meta content="a1z3i" name="data-spm">
+        <meta content="20140614.a1z3i.meyxt9ed" name="data-scm">
+    </head>
+
+    <body data-spm="meyxt9ed">
+    <!-- Item Header Template -->
+        <div class="html_content">
+            <div class="item-section" data-repeat="sections">
+                <div class="item-section_header">
+                    <h2>申万宏源证券有限公司--期权报价</h2>
+                </div>
+
+                <table id="optionTable" class="table">
+                    <tr id="tableTitle">
+                        <th class="table-th">品种</th>
+                        <th class="table-th">标的</th>
+                        <th class="table-th">标的价格</th>
+                        <th class="table-th">买价</th>
+                        <th class="table-th">卖价</th>
+                    </tr>
+                    <tr id="option1" style="background-color:#050505">
+                        <td class="table-td">PTA</td>
+                        <td class="table-td">TA805</td>
+                        <td class="table-td">5500</td>
+                        <td class="table-td">85.45</td>
+                        <td class="table-td">99.06</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+        <script>
+
+             $(function() {
+                 var data = [
+                    {
+                        future : "铁矿石",
+                        contract : "I1805",
+                        price : "532.5",
+                        ask : "18.44",
+                        bid : "23.19"
+                    },
+                    {
+                        future : "螺纹钢",
+                        contract : "RB1805",
+                        price : "3794",
+                        ask : "91.77",
+                        bid : "121.54"
+                    },
+                    {
+                        future : "沪金",
+                        contract : "AU1806",
+                        price : "227.70",
+                        ask : "2.42",
+                        bid : "3.14"
+                    },
+                    {
+                        future : "焦炭",
+                        contract : "J1805",
+                        price : "1994",
+                        ask : "76.65",
+                        bid : "95.50"
+                    }
+                ];
+
+                for(var i = 0; i < data.length; ++i)
+                {
+                    var newRow='<tr id="option'+i+'" style="background-color:#050505">' +
+                        '<td class="table-td">'+ data[i].future +'</td>' +
+                        '<td class="table-td">'+ data[i].contract +'</td>' +
+                        '<td class="table-td">'+ data[i].price +'</td>' +
+                        '<td class="table-td">'+ data[i].ask +'</td>' +
+                        '<td class="table-td">'+ data[i].bid +'</td>';
+                    $('#optionTable').append(newRow);
+                }
+
+            });
+
+        </script>
+    </body>
+</html>
