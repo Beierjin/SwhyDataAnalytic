@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from OptionQuotes import get_data, quotes
+from OptionQuotes import get_data, quotes, TQuotes
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', get_data.GetDatafromWind),
     path('quotes/', quotes.GetQuotesDataFromTY),
+    path('TQuotes/', TQuotes.GetTQuotesData),
 ]
