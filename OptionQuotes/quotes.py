@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import re, time, os, json
+import re, time, os, json, math
 import pandas as pd
 from WindPy import w
 
@@ -47,10 +47,16 @@ def GetQuotesDataFromTY(request):
         vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
 
         pricingAsk = tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call')
-        pricingBid = tyApi.TYPricing(forward, forward, vol + 0.03, tau, r, 'put')
+        #出错处理
+        if(math.isnan(pricingAsk)):
+            pricingAsk = float(0)
+        pricingBid = tyApi.TYPricing(forward, forward, vol + 0.03, tau, r, 'call')
+        # 出错处理
+        if (math.isnan(pricingBid)):
+            pricingBid = float(0)
 
-        contractData['forward'] = forward
-        contractData['pricingAsk'] = round(pricingAsk,2)
+        contractData['forward'] = round(forward, 2)
+        contractData['pricingAsk'] = round(pricingAsk, 2)
         contractData['pricingBid'] = round(pricingBid, 2)
         contractData['name'] = contractList[contract]
 
@@ -61,7 +67,7 @@ def GetQuotesDataFromTY(request):
     w.stop()
 
     # 压缩为JsonData
-    json_data = json.dumps(quoteData, ensure_ascii=False)
+    json_data = json.dumps(quoteData, ensure_ascii=False, sort_keys=True)
     print(json_data)
 
     return render(request, 'quotes.html', {'series': json_data})

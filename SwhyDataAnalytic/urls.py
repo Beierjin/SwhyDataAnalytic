@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', get_data.GetDatafromWind),
     path('quotes/', quotes.GetQuotesDataFromTY, name='quotes'),
-    url(r'^TQuotes/(?P<instrument>[\d]+)', TQuotes.GetTQuotesData, name='TQuotes'),
+    path('TQuotes/<str:instrument>', TQuotes.GetTQuotesData, name='TQuotes'),
+    # url(r'^TQuotes/(?P<instrument>[\d]+)', TQuotes.GetTQuotesData, name='TQuotes'),
 ]
