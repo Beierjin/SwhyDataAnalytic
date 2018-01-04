@@ -2,13 +2,13 @@ from django.shortcuts import render
 
 import re, time, os, json, math
 import pandas as pd
-from WindPy import w
+# from WindPy import w
 
 from . import TYApi
 
 #读取期货合约
 baseDir = os.path.dirname(os.path.abspath(__name__))
-contractListFileDir = baseDir + '\\files\\BasicInfo\\contractList.xlsx'
+contractListFileDir = baseDir + '/files/BasicInfo/contractList.xlsx'
 print(baseDir)
 contractList = list(pd.read_excel(contractListFileDir)['contract'])
 contractName = list(pd.read_excel(contractListFileDir)['name'])
@@ -30,7 +30,7 @@ def GetQuotesDataFromTY(request):
     tyApi = TYApi.TYApi()
 
     #开启wind接口
-    w.start()
+    # w.start()
 
     #获取报价
     for contract in contractList.keys():
@@ -38,19 +38,20 @@ def GetQuotesDataFromTY(request):
         contractData = {}
 
         #获取期货现价
-        # forward = tyApi.TYMktQuoteGet(today, contract, time_zone)
-        forward = w.wsq(contract, "rt_last").Data[0][0]
+        forward = tyApi.TYMktQuoteGet(today, contract, time_zone)
+        # forward = w.wsq(contract, "rt_last").Data[0][0]
 
         #获取波动率曲线
         volSpread = tyApi.TYMdload('VOL_BLACK_ATM_' + re.sub(r'([\d]+)', '', contract))
         #获得波动率
         vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
 
-        pricingAsk = tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call')
+        pricingAsk = float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
+        # print(pricingAsk)
         #出错处理
         if(math.isnan(pricingAsk)):
             pricingAsk = float(0)
-        pricingBid = tyApi.TYPricing(forward, forward, vol + 0.03, tau, r, 'call')
+        pricingBid = float(tyApi.TYPricing(forward, forward, vol + 0.03, tau, r, 'call'))
         # 出错处理
         if (math.isnan(pricingBid)):
             pricingBid = float(0)
@@ -64,7 +65,7 @@ def GetQuotesDataFromTY(request):
         quoteData[contract] = contractData
 
     #关闭wind接口
-    w.stop()
+    # w.stop()
 
     # 压缩为JsonData
     json_data = json.dumps(quoteData, ensure_ascii=False, sort_keys=True)

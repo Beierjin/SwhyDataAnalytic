@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 import time, re, json
 from . import TYApi
-from WindPy import w
+# from WindPy import w
 
 def GetTQuotesData(request, instrument):
 
@@ -18,11 +18,12 @@ def GetTQuotesData(request, instrument):
     tyApi = TYApi.TYApi()
 
     # 开启wind接口
-    w.start()
+    # w.start()
     #获取现价
-    forward = w.wsq(instrument, "rt_last").Data[0][0]
+    # forward = w.wsq(instrument, "rt_last").Data[0][0]
+    forward = tyApi.TYMktQuoteGet(today, instrument, time_zone)
     # 关闭wind接口
-    w.stop()
+    # w.stop()
 
     # 获取波动率曲线
     volSpread = tyApi.TYMdload('VOL_BLACK_ATM_' + re.sub(r'([\d]+)', '', instrument))

@@ -69,17 +69,16 @@ class TYApi:
             raise
 
 
-    def TYMktQuoteGet(self, timestamp, instrument = '', timezone = 'Asia/Shanghai', instance = 'close'):
+    def TYMktQuoteGet(self, timestamp, instrument = '', timezone = 'Asia/Shanghai', instance = 'intraday'):
 
         #settle为价格
         settle = self.call('market-data-service', 'mktQuoteGet',
                   {'instrument_id': instrument,
                    'instance': instance,
-                   'field': 'settle',
+                   'field': 'last',
                    'timestamp': timestamp,
                    'timezone': timezone},
                   self.token)
-
         return settle
 
 
