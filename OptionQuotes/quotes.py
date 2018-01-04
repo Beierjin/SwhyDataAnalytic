@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 import re, time, os, json, math
 import pandas as pd
+from django.http import JsonResponse
 # from WindPy import w
 
 from . import TYApi
@@ -72,3 +73,7 @@ def GetQuotesDataFromTY(request):
     print(json_data)
 
     return render(request, 'quotes.html', {'series': json_data})
+
+def ajax_dict(request):
+    name_dict = {'twz': 'Love python and Django', 'zqxt': 'I am teaching Django'}
+    return JsonResponse(name_dict)

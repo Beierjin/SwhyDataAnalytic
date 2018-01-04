@@ -74,8 +74,36 @@
                         '<td class="table-td">'+ data[i][2] +'</td>';
                     $('#optionTable').append(newRow);
                 }
-
+                //刷新页面
+                refreshQuoteData();
             });
+
+             function refreshQuoteData() {
+                 //循环刷新
+                 while(1){
+                     var url = '/quotes/updateQuotes/'
+                     $.ajax({
+                        type: 'POST',
+                        data:{
+                        },
+                        dataType: 'json',
+                        url: url,
+                        success: updateData(data),
+                        error : errorInfo(msg),
+                        async: false
+                     });
+                 }
+             }
+
+            var updateData = function (data){
+                //更新数据
+                console.log(data);
+            };
+
+             var errorInfo = function (msg){
+
+            };
+
 
         </script>
     </body>
