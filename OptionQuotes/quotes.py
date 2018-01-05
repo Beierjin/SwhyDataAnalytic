@@ -15,7 +15,21 @@ contractList = list(pd.read_excel(contractListFileDir)['contract'])
 contractName = list(pd.read_excel(contractListFileDir)['name'])
 contractList = dict(zip(contractList, contractName))
 
-def GetQuotesDataFromTY(request):
+def loadData(request):
+    #获取同余数据
+    quoteData = GetQuotesDataFromTY()
+    # 压缩为JsonData
+    jsonData = json.dumps(quoteData, ensure_ascii=False, sort_keys=True)
+    return render(request, 'quotes.html', {'series': jsonData})
+
+def updateData(request):
+    # 获取同余数据
+    quoteData = GetQuotesDataFromTY()
+    return JsonResponse(quoteData)
+
+
+
+def GetQuotesDataFromTY():
 
     quoteData = {}
 
@@ -67,13 +81,6 @@ def GetQuotesDataFromTY(request):
 
     #关闭wind接口
     # w.stop()
+    print(quoteData)
 
-    # 压缩为JsonData
-    json_data = json.dumps(quoteData, ensure_ascii=False, sort_keys=True)
-    print(json_data)
-
-    return render(request, 'quotes.html', {'series': json_data})
-
-def ajax_dict(request):
-    name_dict = {'twz': 'Love python and Django', 'zqxt': 'I am teaching Django'}
-    return JsonResponse(name_dict)
+    return quoteData

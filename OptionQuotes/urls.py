@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from OptionQuotes import get_data, quotes, TQuotes
+from . import get_data, quotes, TQuotes
 from django.conf.urls import url
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # # path('hello/', get_data.GetDatafromWind),
-    # path('quotes/', quotes.GetQuotesDataFromTY, name='quotes'),
-    path('updateQuotes/', quotes.ajax_dict, name='TQuotes'),
-    # url(r'^TQuotes/(?P<instrument>[\d]+)', TQuotes.GetTQuotesData, name='TQuotes'),
+    path('', quotes.loadData, name='index'),
+    path('TQuotes/<str:instrument>', TQuotes.GetTQuotesData, name='TQuotes'),
+    path('updateQuotes/', quotes.updateData, name='updateQuotes'),
 ]

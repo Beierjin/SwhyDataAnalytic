@@ -14,14 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from OptionQuotes import get_data, quotes, TQuotes
+from django.urls import path, include
+from OptionQuotes import get_data, quotes, TQuotes, urls
 from django.conf.urls import url
+import OptionQuotes
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('hello/', get_data.GetDatafromWind),
-    path('quotes/', quotes.GetQuotesDataFromTY, name='quotes'),
-    path('TQuotes/<str:instrument>', TQuotes.GetTQuotesData, name='TQuotes'),
+    path('quotes/', include('OptionQuotes.urls')),
+    # path('quotes/', quotes.GetQuotesDataFromTY, name='quotes'),
+    # path('TQuotes/<str:instrument>', TQuotes.GetTQuotesData, name='TQuotes'),
     # url(r'^TQuotes/(?P<instrument>[\d]+)', TQuotes.GetTQuotesData, name='TQuotes'),
 ]

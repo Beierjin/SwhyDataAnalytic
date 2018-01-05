@@ -6,7 +6,7 @@
         <meta content="yes" name="apple-mobile-web-app-capable">
         <meta content="yes" name="apple-touch-fullscreen">
         <meta content="telephone=no,email=no" name="format-detection">
-        <meta http-equiv="refresh" content="20">
+{#        <meta http-equiv="refresh" content="20">#}
         <script src="/static/js/flexible_css.debug.js"></script>
         <script src="/static/js/flexible.debug.js"></script>
         <script src="/static/js/jquery-3.2.1.min.js"></script>
@@ -50,56 +50,54 @@
                  console.log(quoteData[0])
 
                  //解析json数据
-                 var data = [];
                  $.each(quoteData[0], function(i, item){
-                     data.push([
-                         i,
-                         item.pricingAsk,
-                         item.pricingBid,
-                         item.forward,
-                         item.name,
-                     ]);
-                 });
-                 console.log(data)
-
-
-                for(var i = 0; i < data.length; ++i)
-                {
-                    var instrument = data[i][0];
-                     var newRow='<tr id="option'+i+'" style="background-color:#050505">' +
-                        '<td class="table-td"> <a href="../TQuotes/' + instrument + '\" style="text-decoration: none; color: inherit;" >'+ data[i][4] + '</a>' +'</td>' +
-                        '<td class="table-td">'+ data[i][0] +'</td>' +
-                        '<td class="table-td">'+ data[i][3] +'</td>' +
-                        '<td class="table-td">'+ data[i][1] +'</td>' +
-                        '<td class="table-td">'+ data[i][2] +'</td>';
+                     var newRow='<tr id="'+i+'" style="background-color:#050505">' +
+                        '<td class="table-td" tr id="'+i+'item"> <a href="../quotes/TQuotes/' + i + '\" style="text-decoration: none; color: inherit;" >'+ item.name + '</a>' +'</td>' +
+                        '<td class="table-td" tr id="'+i+'contract">'+ i +'</td>' +
+                        '<td class="table-td" tr id="'+i+'forward">'+ item.forward +'</td>' +
+                        '<td class="table-td" tr id="'+i+'pricingAsk">'+ item.pricingAsk +'</td>' +
+                        '<td class="table-td" tr id="'+i+'pricingBid">'+ item.pricingBid +'</td>';
                     $('#optionTable').append(newRow);
-                }
-                //刷新页面
-                refreshQuoteData();
+                 });
+
+                //刷新页面，每隔10秒刷新一次数据
+                setInterval(refreshQuoteData,10000);
             });
 
              function refreshQuoteData() {
-                 //循环刷新
-                 while(1){
-                     var url = '/quotes/updateQuotes/'
-                     $.ajax({
-                        type: 'POST',
-                        data:{
-                        },
-                        dataType: 'json',
-                        url: url,
-                        success: updateData(data),
-                        error : errorInfo(msg),
-                        async: false
-                     });
-                 }
+                 var url = '/quotes/updateQuotes/'
+                 $.ajax({
+                     type: 'POST',
+                     data:{
+                         test:'test'
+                     },
+                     dataType: 'json',
+                     url: url,
+                     success: updateData,
+                     error : errorInfo,
+                     async: false
+                 });
              }
 
-            var updateData = function (data){
+            var updateData = function(data){
                 //更新数据
                 console.log(data);
+                $.each(data, function(i, item) {
+                    changeFont('#'+i+'item', 'aaa');
+                    alert('#'+i+'item');
+                    changeFont('#'+i+'contract', i);
+                    changeFont('#'+i+'forward', item.forward);
+                    changeFont('#'+i+'pricingAsk', item.pricingAsk);
+                    changeFont('#'+i+'pricingBid', item.pricingBid);
+                });
             };
 
+            // 更改内容渐变字体
+            function changeFont(id, text) {
+	            $(id).animate({ opacity: '0', fontSize: '18px' }, 1000, function () {
+		            $(this).html(text);
+	            }).animate({ opacity: '1' }, 1000);
+            }
              var errorInfo = function (msg){
 
             };
