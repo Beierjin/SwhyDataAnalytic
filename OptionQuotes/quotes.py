@@ -15,18 +15,14 @@ contractList = list(pd.read_excel(contractListFileDir)['contract'])
 contractName = list(pd.read_excel(contractListFileDir)['name'])
 contractList = dict(zip(contractList, contractName))
 
+
+def loadPage(request):
+    return render(request, 'quotes.html')
+
 def loadData(request):
     #获取同余数据
     quoteData = GetQuotesDataFromTY()
-    # 压缩为JsonData
-    jsonData = json.dumps(quoteData, ensure_ascii=False, sort_keys=True)
-    return render(request, 'quotes.html', {'series': jsonData})
-
-def updateData(request):
-    # 获取同余数据
-    quoteData = GetQuotesDataFromTY()
     return JsonResponse(quoteData)
-
 
 
 def GetQuotesDataFromTY():
@@ -81,6 +77,7 @@ def GetQuotesDataFromTY():
 
     #关闭wind接口
     # w.stop()
+    sorted(quoteData.items(), key=lambda d: d[0])
     print(quoteData)
 
     return quoteData

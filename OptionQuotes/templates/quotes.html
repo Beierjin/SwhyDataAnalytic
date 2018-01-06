@@ -10,8 +10,10 @@
         <script src="/static/js/flexible_css.debug.js"></script>
         <script src="/static/js/flexible.debug.js"></script>
         <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/jquery.mloading.js"></script>
         <title>申万宏源FICC</title>
         <link href="/static/css/quotes.css" rel="stylesheet" type="text/css">
+        <link href="/static/css/jquery.mloading.css" rel="stylesheet" type="text/css">
 
         <style>
             html,body{
@@ -43,33 +45,56 @@
         </div>
 
         <script>
-
              $(function() {
-                 //从后端获取数据
-                 var quoteData = [{{ series|safe }}];
-                 console.log(quoteData[0])
+                $('body').mLoading("show");
 
-                 //解析json数据
-                 $.each(quoteData[0], function(i, item){
-                     var newRow='<tr id="'+i+'" style="background-color:#050505">' +
-                        '<td class="table-td" tr id="'+i+'item"> <a href="../quotes/TQuotes/' + i + '\" style="text-decoration: none; color: inherit;" >'+ item.name + '</a>' +'</td>' +
-                        '<td class="table-td" tr id="'+i+'contract">'+ i +'</td>' +
-                        '<td class="table-td" tr id="'+i+'forward">'+ item.forward +'</td>' +
-                        '<td class="table-td" tr id="'+i+'pricingAsk">'+ item.pricingAsk +'</td>' +
-                        '<td class="table-td" tr id="'+i+'pricingBid">'+ item.pricingBid +'</td>';
-                    $('#optionTable').append(newRow);
-                 });
+                //加载报价数据
+                loadQuotesData();
+
+                //加载框关闭
+                $('body').mLoading("hide");
 
                 //刷新页面，每隔10秒刷新一次数据
-                setInterval(refreshQuoteData,10000);
+                setInterval(refreshQuoteData,30000);
             });
+
+             function loadQuotesData(){
+                 var url = '/quotes/loadQuotes/'
+                 $.ajax({
+                     type: 'POST',
+                     data:{
+                     },
+                     dataType: 'json',
+                     url: url,
+                     beforeSend:function(XMLHttpRequest){
+                        $('body').mLoading("show");
+                     },
+                     success: loadData,
+                     error : errorInfo,
+                     async: false
+                 });
+             }
+
+             var loadData = function(data){
+                //更新数据
+                console.log(data);
+                $.each(data, function(i, item){
+                     itemId = i.substr(0, i.indexOf('.'));
+                     var newRow='<tr id="'+itemId+'" style="background-color:#050505">' +
+                        '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + i + '\" style="text-decoration: none; color: inherit;" >'+ item.name + '</a>' +'</td>' +
+                        '<td class="table-td" id="'+itemId+'contract">'+ i +'</td>' +
+                        '<td class="table-td" id="'+itemId+'forward">'+ item.forward +'</td>' +
+                        '<td class="table-td" id="'+itemId+'pricingAsk">'+ item.pricingAsk +'</td>' +
+                        '<td class="table-td" id="'+itemId+'pricingBid">'+ item.pricingBid +'</td>';
+                    $('#optionTable').append(newRow);
+                });
+             };
 
              function refreshQuoteData() {
                  var url = '/quotes/updateQuotes/'
                  $.ajax({
                      type: 'POST',
                      data:{
-                         test:'test'
                      },
                      dataType: 'json',
                      url: url,
@@ -83,26 +108,26 @@
                 //更新数据
                 console.log(data);
                 $.each(data, function(i, item) {
-                    changeFont('#'+i+'item', 'aaa');
-                    alert('#'+i+'item');
-                    changeFont('#'+i+'contract', i);
-                    changeFont('#'+i+'forward', item.forward);
-                    changeFont('#'+i+'pricingAsk', item.pricingAsk);
-                    changeFont('#'+i+'pricingBid', item.pricingBid);
+                    itemId = i.substr(0, i.indexOf('.'));
+                    changeFont(itemId+'forward', item.forward);
+                    changeFont(itemId+'pricingAsk', item.pricingAsk);
+                    changeFont(itemId+'pricingBid', item.pricingBid);
                 });
             };
 
-            // 更改内容渐变字体
+            // 更改内容渐变字体,#####需要判断修改的数值是否有变化#####
             function changeFont(id, text) {
-	            $(id).animate({ opacity: '0', fontSize: '18px' }, 1000, function () {
-		            $(this).html(text);
-	            }).animate({ opacity: '1' }, 1000);
+                //如果字段值有变化，触发修改动作
+                if($("#"+id).text() != text){
+                    $("#"+id).animate({ opacity: '0'}, 500, function () {
+		                $(this).text(text);
+	                }).animate({ opacity: '1'}, 500);
+                }
             }
-             var errorInfo = function (msg){
+            //错误信息处理界面
+            var errorInfo = function(msg){
 
             };
-
-
         </script>
     </body>
 </html>

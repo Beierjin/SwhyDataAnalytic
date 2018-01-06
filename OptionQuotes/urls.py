@@ -21,7 +21,8 @@ from django.conf.urls import url
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # # path('hello/', get_data.GetDatafromWind),
-    path('', quotes.loadData, name='index'),
+    path('', quotes.loadPage, name='index'),
     path('TQuotes/<str:instrument>', TQuotes.GetTQuotesData, name='TQuotes'),
-    path('updateQuotes/', quotes.updateData, name='updateQuotes'),
+    path('updateQuotes/', quotes.loadData, name='updateQuotes'),
+    path('loadQuotes/', quotes.loadData, name='loadQuotes'),
 ]
