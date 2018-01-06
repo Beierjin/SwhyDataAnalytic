@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import re, time, os, json, math
+import re, datetime, os, json, math
 import pandas as pd
 from django.http import JsonResponse
 # from WindPy import w
@@ -22,7 +22,7 @@ def loadPage(request):
 def loadData(request):
     #获取同余数据
     quoteData = GetQuotesDataFromTY()
-    return JsonResponse(quoteData)
+    return JsonResponse(quoteData, safe=False)
 
 
 def GetQuotesDataFromTY():
@@ -30,7 +30,8 @@ def GetQuotesDataFromTY():
     quoteData = {}
 
     #获得当前时间
-    today = time.strftime('%Y-%m-%d',time.localtime(time.time()))
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
+    yesterday = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
     time_zone = 'Asia/Shanghai'
 
     #定价参数
@@ -50,6 +51,7 @@ def GetQuotesDataFromTY():
 
         #获取期货现价
         forward = tyApi.TYMktQuoteGet(today, contract, time_zone)
+        lastPrice = tyApi.TYMktQuoteGet(yesterday, contract, time_zone, 'close', 'settle')
         # forward = w.wsq(contract, "rt_last").Data[0][0]
 
         #获取波动率曲线
@@ -71,13 +73,14 @@ def GetQuotesDataFromTY():
         contractData['pricingAsk'] = round(pricingAsk, 2)
         contractData['pricingBid'] = round(pricingBid, 2)
         contractData['name'] = contractList[contract]
+        contractData['lastPrice'] = round(lastPrice, 2)
 
         #组成dict
         quoteData[contract] = contractData
 
     #关闭wind接口
     # w.stop()
-    sorted(quoteData.items(), key=lambda d: d[0])
+    quoteData = [(k,quoteData[k]) for k in sorted(quoteData.keys())]
     print(quoteData)
 
     return quoteData
