@@ -6,7 +6,6 @@
         <meta content="yes" name="apple-mobile-web-app-capable">
         <meta content="yes" name="apple-touch-fullscreen">
         <meta content="telephone=no,email=no" name="format-detection">
-{#        <meta http-equiv="refresh" content="20">#}
         <script src="/static/js/flexible_css.debug.js"></script>
         <script src="/static/js/flexible.debug.js"></script>
         <script src="/static/js/jquery-3.2.1.min.js"></script>
@@ -85,7 +84,7 @@
                      else if(item[1].forward == item[1].lastPrice)
                          fontColor = 'White'
                      var newRow=$('<tr id="'+itemId+'" style="background-color:#050505">' +
-                        '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + i + '\" style="text-decoration: none; color: inherit;" >'+ item[1].name + '</a>' +'</td>' +
+                        '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + item[0] + '\" style="text-decoration: none; color: inherit;" >'+ item[1].name + '</a>' +'</td>' +
                         '<td class="table-td" id="'+itemId+'contract">'+ item[0] +'</td>' +
                         '<td class="table-td" id="'+itemId+'forward" style="color: '+ fontColor + ';">'+ item[1].forward +'</td>' +
                         '<td class="table-td" id="'+itemId+'pricingAsk" style="color: '+ fontColor + ';">'+ item[1].pricingAsk +'</td>' +

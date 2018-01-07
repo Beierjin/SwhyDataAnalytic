@@ -2,7 +2,18 @@ from django.shortcuts import render
 
 import time, re, json
 from . import TYApi
+from django.http import JsonResponse
 # from WindPy import w
+
+
+def loadPage(request, instrument):
+    return render(request, 'TQuotes.html')
+
+def loadData(request, instrument):
+    #获取同余数据
+    quoteData = GetTQuotesData(request, instrument)
+    return JsonResponse(quoteData, safe=False)
+
 
 def GetTQuotesData(request, instrument):
 
@@ -48,11 +59,12 @@ def GetTQuotesData(request, instrument):
         TQuoteData['pricingPutBid'] = round(pricingPutBid,2)
         contractData[price] = TQuoteData
 
-    # 压缩为JsonData
-    json_data = json.dumps(contractData, ensure_ascii=False, sort_keys=True)
-    print(json_data)
+    # # 压缩为JsonData
+    # json_data = json.dumps(contractData, ensure_ascii=False, sort_keys=True)
+    # print(json_data)
 
-    return render(request, 'TQuotes.html', {'series': json_data})
+    # return render(request, 'TQuotes.html', {'series': json_data})
+    return contractData
 
 '''
 x<500 变动范围5, 500<x<2000 变动范围10, 2000<x<6000 变动范围50, 6000<x 变动范围100

@@ -6,12 +6,13 @@
         <meta content="yes" name="apple-mobile-web-app-capable">
         <meta content="yes" name="apple-touch-fullscreen">
         <meta content="telephone=no,email=no" name="format-detection">
-        <meta http-equiv="refresh" content="20">
         <script src="/static/js/flexible_css.debug.js"></script>
         <script src="/static/js/flexible.debug.js"></script>
         <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/jquery.mloading.js"></script>
         <title>申万宏源FICC</title>
         <link href="/static/css/quotes.css" rel="stylesheet" type="text/css">
+        <link href="/static/css/jquery.mloading.css" rel="stylesheet" type="text/css">
 
         <style>
             html,body{
@@ -55,11 +56,15 @@
                  $('body').mLoading({
                     text:"加载T型报价",//加载文字，默认值：加载中...
                  });
+
+                 //获取合约号
+                 var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
+
                  //加载报价数据
-                 loadQuotesData()
+                 loadQuotesData(instrument)
 
                  //刷新页面，每隔10秒刷新一次数据
-                 setInterval(refreshQuoteData,30000);
+                 setInterval(refreshQuoteData(instrument),30000);
 
                  /*
                  //从后端获取数据
@@ -80,8 +85,8 @@
                  */
 
              });
-             function loadQuotesData(){
-                 var url = '/quotes/TQuotes/'
+             function loadQuotesData(instrument){
+                 var url = '/quotes/TQuotes/loadTQuotes/' + instrument
                  $.ajax({
                      type: 'POST',
                      data:{
@@ -98,21 +103,24 @@
              var loadData = function(data){
                 //更新数据
                 console.log(data);
+                //获取合约号
+                var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
+                itemId = instrument.substr(0, instrument.indexOf('.'));
+
                 $.each(data, function(i, item){
-                     itemId = item[0].substr(0, item[0].indexOf('.'));
-                     var newRow=$('<tr id="'+itemId+'" style="background-color:#050505">' +
-                        '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + i + '\" style="text-decoration: none; color: inherit;" >'+ item[1].name + '</a>' +'</td>' +
-                        '<td class="table-td" id="'+itemId+'contract">'+ item[0] +'</td>' +
-                        '<td class="table-td" id="'+itemId+'forward" style="color: '+ fontColor + ';">'+ item[1].forward +'</td>' +
-                        '<td class="table-td" id="'+itemId+'pricingAsk" style="color: '+ fontColor + ';">'+ item[1].pricingAsk +'</td>' +
-                        '<td class="table-td" id="'+itemId+'pricingBid" style="color: '+ fontColor + ';">'+ item[1].pricingBid +'</td>').hide().fadeIn(1000);
+                     var newRow = $('<tr id="'+itemId+'" style="background-color:#050505">' +
+                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:red">' + item.pricingCallAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:red">' + item.pricingCallBid + '</td>' +
+                         '<td class="table-td" id="'+itemId+'item">' + i + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:#008B00">' + item.pricingPutAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:#008B00">' + item.pricingPutBid + '</td>').hide().fadeIn(1000);
                      $('#optionTable').append(newRow);
                 });
                 $('body').mLoading("hide");
              };
 
-             function refreshQuoteData() {
-                 var url = '/quotes/updateQuotes/'
+             function refreshQuoteData(instrument) {
+                 var url = '/quotes/TQuotes/updateTQuotes/' + instrument
                  $.ajax({
                      type: 'POST',
                      data:{
@@ -127,6 +135,7 @@
              }
 
             var updateData = function(data){
+                 /*
                 //更新数据
                 console.log(data);
                 $.each(data, function(i, item) {
@@ -141,6 +150,7 @@
                     changeFont(itemId+'pricingAsk', item[1].pricingAsk, fontColor);
                     changeFont(itemId+'pricingBid', item[1].pricingBid, fontColor);
                 });
+                */
             };
 
             // 更改内容渐变字体,#####需要判断修改的数值是否有变化#####
