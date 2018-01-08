@@ -53,7 +53,7 @@
                  loadQuotesData()
 
                 //刷新页面，每隔10秒刷新一次数据
-                setInterval(refreshQuoteData,30000);
+                setInterval(refreshQuoteData,5000);
             });
 
              function loadQuotesData(){
@@ -131,7 +131,7 @@
                 //如果字段值有变化，触发修改动作
                 if($("#"+id).text() != text){
                     $("#"+id).animate({ opacity: '0'}, 500, function () {
-		                $(this).text(text).css("color",fontColor);
+		                $(this).html(text).css("color",fontColor);
 	                }).animate({ opacity: '1'}, 500);
                 }
             }

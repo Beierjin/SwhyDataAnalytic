@@ -64,25 +64,8 @@
                  loadQuotesData(instrument)
 
                  //刷新页面，每隔10秒刷新一次数据
-                 setInterval(refreshQuoteData(instrument),30000);
-
-                 /*
-                 //从后端获取数据
-                 var quoteData = [{{ series|safe }}];
-                 console.log(quoteData[0])
-
-                 $.each(quoteData[0], function(i, item) {
-                     var newRow = '<tr style="background-color:#050505">' +
-                         '<td class="table-td" style="color:red">' + item.pricingCallAsk + '</td>' +
-                         '<td class="table-td" style="color:red">' + item.pricingCallBid + '</td>' +
-                         '<td class="table-td">' + i + '</td>' +
-                         '<td class="table-td" style="color:#008B00">' + item.pricingPutAsk + '</td>' +
-                         '<td class="table-td" style="color:#008B00">' + item.pricingPutBid + '</td>';
-                     $('#optionTable').append(newRow);
-                 });
-                 var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
-                 $('#insturment').text(instrument);
-                 */
+                 //setInterval(refreshQuoteData(instrument),5000);
+                 window.setInterval(refreshQuoteData,5000,instrument);
 
              });
              function loadQuotesData(instrument){
@@ -102,20 +85,35 @@
 
              var loadData = function(data){
                 //更新数据
-                console.log(data);
+                console.log(data.TQuoteData);
                 //获取合约号
                 var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
                 itemId = instrument.substr(0, instrument.indexOf('.'));
 
-                $.each(data, function(i, item){
+                //根据现价和昨收价，给报价上色
+                if(data.forward > data.lastPrice) {
+                    var callColor = 'red';
+                    var putColor = '#008B00'
+                }
+                else if(data.forward < data.lastPrice){
+                    var callColor = '#008B00';
+                    var putColor = 'red'
+                }
+                else if(data.forward == data.lastPrice){
+                    var callColor = 'white';
+                    var putColor = 'white'
+                }
+
+                $.each(data.TQuoteData, function(i, item){
                      var newRow = $('<tr id="'+itemId+'" style="background-color:#050505">' +
-                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:red">' + item.pricingCallAsk + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:red">' + item.pricingCallBid + '</td>' +
-                         '<td class="table-td" id="'+itemId+'item">' + i + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:#008B00">' + item.pricingPutAsk + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:#008B00">' + item.pricingPutBid + '</td>').hide().fadeIn(1000);
+                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:' + callColor + '">' + item[1].pricingCallAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:' + callColor + '">' + item[1].pricingCallBid + '</td>' +
+                         '<td class="table-td" id="'+itemId+'item">' + item[0] + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:' + putColor + '">' + item[1].pricingPutAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:' + putColor + '">' + item[1].pricingPutBid + '</td>').hide().fadeIn(1000);
                      $('#optionTable').append(newRow);
                 });
+                changeFont('insturment', data.forward, 'White');
                 $('body').mLoading("hide");
              };
 
@@ -151,6 +149,7 @@
                     changeFont(itemId+'pricingBid', item[1].pricingBid, fontColor);
                 });
                 */
+                changeFont('insturment', data.forward, 'White');
             };
 
             // 更改内容渐变字体,#####需要判断修改的数值是否有变化#####
@@ -167,6 +166,16 @@
                 //关闭进度条
                 $('body').mLoading("hide");
             };
+
+            //修改setInterval函数，令setinterval函数支持输入参数，标准使用格式window.setInterval(refreshQuoteData,5000,instrument)，在响应时间后可以跟多个参数
+            var __sto = setInterval;
+            window.setInterval = function(callback,timeout,param){
+                var args = Array.prototype.slice.call(arguments,2);
+                var _cb = function(){
+                    callback.apply(null,args);
+                }
+                __sto(_cb,timeout);
+            }
 
         </script>
 

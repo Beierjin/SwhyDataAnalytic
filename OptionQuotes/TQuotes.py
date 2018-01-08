@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import time, re, json
+import datetime, re, json
 from . import TYApi
 from django.http import JsonResponse
 # from WindPy import w
@@ -18,7 +18,8 @@ def loadData(request, instrument):
 def GetTQuotesData(request, instrument):
 
     # 获得当前时间
-    today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
+    yesterday = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
     time_zone = 'Asia/Shanghai'
 
     # 定价参数
@@ -33,6 +34,7 @@ def GetTQuotesData(request, instrument):
     #获取现价
     # forward = w.wsq(instrument, "rt_last").Data[0][0]
     forward = tyApi.TYMktQuoteGet(today, instrument, time_zone)
+
     # 关闭wind接口
     # w.stop()
 
@@ -41,6 +43,8 @@ def GetTQuotesData(request, instrument):
     # 获得波动率
     vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
 
+    #返回数据
+    TData = {}
     #存储期权数据
     contractData = {}
 
@@ -59,12 +63,16 @@ def GetTQuotesData(request, instrument):
         TQuoteData['pricingPutBid'] = round(pricingPutBid,2)
         contractData[price] = TQuoteData
 
-    # # 压缩为JsonData
-    # json_data = json.dumps(contractData, ensure_ascii=False, sort_keys=True)
-    # print(json_data)
+    #对行权价排序
+    contractData = [(k, contractData[k]) for k in sorted(contractData.keys())]
+    TData['TQuoteData'] = contractData
+    #获取限价和昨收价
+    forward = tyApi.TYMktQuoteGet(today, instrument, time_zone)
+    lastPrice = tyApi.TYMktQuoteGet(yesterday, instrument, time_zone, 'close', 'settle')
+    TData['forward'] = round(forward, 2)
+    TData['lastPrice'] = round(lastPrice, 2)
 
-    # return render(request, 'TQuotes.html', {'series': json_data})
-    return contractData
+    return TData
 
 '''
 x<500 变动范围5, 500<x<2000 变动范围10, 2000<x<6000 变动范围50, 6000<x 变动范围100

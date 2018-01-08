@@ -19,14 +19,14 @@ from . import get_data, quotes, TQuotes
 from django.conf.urls import url
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-    # # path('hello/', get_data.GetDatafromWind),
     #主报价页面
     path('', quotes.loadPage, name='quotes'),
+    #主报价POST
     path('updateQuotes/', quotes.loadData, name='updateQuotes'),
     path('loadQuotes/', quotes.loadData, name='loadQuotes'),
     #T型报价页面
     path('TQuotes/<str:instrument>', TQuotes.loadPage, name='TQuotes'),
+    #T型报价 POST
     path('TQuotes/loadTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
     path('TQuotes/updateTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
 
