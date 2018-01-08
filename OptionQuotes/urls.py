@@ -21,7 +21,13 @@ from django.conf.urls import url
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # # path('hello/', get_data.GetDatafromWind),
-    path('', quotes.loadData, name='index'),
-    path('TQuotes/<str:instrument>', TQuotes.GetTQuotesData, name='TQuotes'),
-    path('updateQuotes/', quotes.updateData, name='updateQuotes'),
+    #主报价页面
+    path('', quotes.loadPage, name='quotes'),
+    path('updateQuotes/', quotes.loadData, name='updateQuotes'),
+    path('loadQuotes/', quotes.loadData, name='loadQuotes'),
+    #T型报价页面
+    path('TQuotes/<str:instrument>', TQuotes.loadPage, name='TQuotes'),
+    path('TQuotes/loadTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
+    path('TQuotes/updateTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
+
 ]

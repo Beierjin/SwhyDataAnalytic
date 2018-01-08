@@ -6,12 +6,13 @@
         <meta content="yes" name="apple-mobile-web-app-capable">
         <meta content="yes" name="apple-touch-fullscreen">
         <meta content="telephone=no,email=no" name="format-detection">
-        <meta http-equiv="refresh" content="20">
         <script src="/static/js/flexible_css.debug.js"></script>
         <script src="/static/js/flexible.debug.js"></script>
         <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/jquery.mloading.js"></script>
         <title>申万宏源FICC</title>
         <link href="/static/css/quotes.css" rel="stylesheet" type="text/css">
+        <link href="/static/css/jquery.mloading.css" rel="stylesheet" type="text/css">
 
         <style>
             html,body{
@@ -50,6 +51,22 @@
         <script>
 
              $(function() {
+
+                 //进度条
+                 $('body').mLoading({
+                    text:"加载T型报价",//加载文字，默认值：加载中...
+                 });
+
+                 //获取合约号
+                 var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
+
+                 //加载报价数据
+                 loadQuotesData(instrument)
+
+                 //刷新页面，每隔10秒刷新一次数据
+                 setInterval(refreshQuoteData(instrument),30000);
+
+                 /*
                  //从后端获取数据
                  var quoteData = [{{ series|safe }}];
                  console.log(quoteData[0])
@@ -64,9 +81,92 @@
                      $('#optionTable').append(newRow);
                  });
                  var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
-                $('#insturment').text(instrument);
+                 $('#insturment').text(instrument);
+                 */
 
-            });
+             });
+             function loadQuotesData(instrument){
+                 var url = '/quotes/TQuotes/loadTQuotes/' + instrument
+                 $.ajax({
+                     type: 'POST',
+                     data:{
+                     },
+                     dataType: 'json',
+                     url: url,
+                     success: loadData,
+                     error : errorInfo,
+                     //采用异步
+                     async: true
+                 });
+             }
+
+             var loadData = function(data){
+                //更新数据
+                console.log(data);
+                //获取合约号
+                var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
+                itemId = instrument.substr(0, instrument.indexOf('.'));
+
+                $.each(data, function(i, item){
+                     var newRow = $('<tr id="'+itemId+'" style="background-color:#050505">' +
+                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:red">' + item.pricingCallAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:red">' + item.pricingCallBid + '</td>' +
+                         '<td class="table-td" id="'+itemId+'item">' + i + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:#008B00">' + item.pricingPutAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:#008B00">' + item.pricingPutBid + '</td>').hide().fadeIn(1000);
+                     $('#optionTable').append(newRow);
+                });
+                $('body').mLoading("hide");
+             };
+
+             function refreshQuoteData(instrument) {
+                 var url = '/quotes/TQuotes/updateTQuotes/' + instrument
+                 $.ajax({
+                     type: 'POST',
+                     data:{
+                     },
+                     dataType: 'json',
+                     url: url,
+                     success: updateData,
+                     error : errorInfo,
+                     //采用异步
+                     async: true
+                 });
+             }
+
+            var updateData = function(data){
+                 /*
+                //更新数据
+                console.log(data);
+                $.each(data, function(i, item) {
+                    itemId = item[0].substr(0, item[0].indexOf('.'));
+                    if(item[1].forward < item[1].lastPrice)
+                         fontColor = 'Green'
+                     else if(item[1].forward > item[1].lastPrice)
+                         fontColor = 'Red'
+                     else if(item[1].forward == item[1].lastPrice)
+                         fontColor = 'White'
+                    changeFont(itemId+'forward', item[1].forward, fontColor);
+                    changeFont(itemId+'pricingAsk', item[1].pricingAsk, fontColor);
+                    changeFont(itemId+'pricingBid', item[1].pricingBid, fontColor);
+                });
+                */
+            };
+
+            // 更改内容渐变字体,#####需要判断修改的数值是否有变化#####
+            function changeFont(id, text, fontColor) {
+                //如果字段值有变化，触发修改动作
+                if($("#"+id).text() != text){
+                    $("#"+id).animate({ opacity: '0'}, 500, function () {
+		                $(this).text(text).css("color",fontColor);
+	                }).animate({ opacity: '1'}, 500);
+                }
+            }
+            //错误信息处理界面
+            var errorInfo = function(msg){
+                //关闭进度条
+                $('body').mLoading("hide");
+            };
 
         </script>
 
