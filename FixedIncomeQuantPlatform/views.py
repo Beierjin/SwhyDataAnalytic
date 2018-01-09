@@ -6,6 +6,13 @@ from WindPy import *
 def insertData(request):
     #建立wind连接
     w.start()
+
+    #建立对应合约号和久期的dict
+    durationDict = {'M1003983':'3M', 'M1003984':'6M', 'M1004093':'1Y', 'M1004094':'2Y', 'M1004095':'3Y', 'M1004096':'4Y',
+                    'M1004097':'5Y', 'M1004098':'7Y', 'M1004099':'10Y', 'M1004122':'1M', 'M1004123':'3M', 'M1004124':'6M',
+                    'M1004125':'9M', 'M1004126':'1Y', 'M1004127':'2Y', 'M1004128':'3Y', 'M1004129':'4Y', 'M1004130':'5Y',
+                    'M1004131':'7Y', 'M1004132':'10Y'}
+
     # 建立数据库连接
     cursor = connection.cursor()
 
@@ -26,9 +33,9 @@ def insertData(request):
     print(df, len(df.index), len(df.columns))
     for i in range (0, len(df.index)):
         for j in range (0, len(df.columns)):
-            print(j, i)
+            print(i, j)
             print(df.iloc[i, j], df.index[i], df.columns[j])
-            cursor.execute("INSERT INTO BONDINFO(BONDTYPE, BONDID, BONDDURATION, BONDYTM, TIMESTAMP) VALUES(%s, %s, %s, %s, %s)",('01', df.columns[j], '', df.iloc[j, i], df.index[i]))
+            cursor.execute("INSERT INTO BONDINFO(BONDTYPE, BONDID, BONDDURATION, BONDYTM, TIMESTAMP) VALUES(%s, %s, %s, %s, %s)",('01', df.columns[j], '', df.iloc[i, j], df.index[i]))
 
     #########中债国债数据导入############
     windData = w.edb("M1004136,M1004677,M1004829,M1000155,M1000156,M1000157,M1000158,M1000159,M1000160,M1000161,"
@@ -39,9 +46,17 @@ def insertData(request):
     # 包装成DataFrame
     # df = pd.DataFrame([windData.Data], columns = windData.Codes, index = windData.Times)
     df = pd.DataFrame(index=timeList)
-    for i in range(len(windData.Data)):
+    for i in range(len(windData.Codes)):
         df[windData.Codes[i]] = windData.Data[i]
-    print(df)
+    print(df, len(df.index), len(df.columns))
+    for i in range(0, len(df.index)):
+        for j in range(0, len(df.columns)):
+            print(i, j)
+            print(df.iloc[i, j], df.index[i], df.columns[j])
+            cursor.execute(
+                "INSERT INTO BONDINFO(BONDTYPE, BONDID, BONDDURATION, BONDYTM, TIMESTAMP) VALUES(%s, %s, %s, %s, %s)",
+                ('01', df.columns[j], '', df.iloc[i, j], df.index[i])
+            )
 
     #########中债国开债数据导入############
     windData = w.edb("M1004258,M1004687,M1004259,M1004260,M1004261,M1004262,M1004263,M1004264,M1004265,M1004266,"
@@ -52,9 +67,17 @@ def insertData(request):
     # 包装成DataFrame
     # df = pd.DataFrame([windData.Data], columns = windData.Codes, index = windData.Times)
     df = pd.DataFrame(index=timeList)
-    for i in range(len(windData.Data)):
+    for i in range(len(windData.Codes)):
         df[windData.Codes[i]] = windData.Data[i]
-    print(df)
+    print(df, len(df.index), len(df.columns))
+    for i in range(0, len(df.index)):
+        for j in range(0, len(df.columns)):
+            print(i, j)
+            print(df.iloc[i, j], df.index[i], df.columns[j])
+            cursor.execute(
+                "INSERT INTO BONDINFO(BONDTYPE, BONDID, BONDDURATION, BONDYTM, TIMESTAMP) VALUES(%s, %s, %s, %s, %s)",
+                ('01', df.columns[j], '', df.iloc[i, j], df.index[i])
+            )
 
     #########中债进出口债数据导入############
     windData = w.edb("M1004138,M1004685,M1000181,M1000182,M1000183,M1000184,M1000185,M1000186,M1000187,M1000188,"
@@ -64,9 +87,17 @@ def insertData(request):
     # 包装成DataFrame
     # df = pd.DataFrame([windData.Data], columns = windData.Codes, index = windData.Times)
     df = pd.DataFrame(index=timeList)
-    for i in range(len(windData.Data)):
+    for i in range(len(windData.Codes)):
         df[windData.Codes[i]] = windData.Data[i]
-    print(df)
+    print(df, len(df.index), len(df.columns))
+    for i in range(0, len(df.index)):
+        for j in range(0, len(df.columns)):
+            print(i, j)
+            print(df.iloc[i, j], df.index[i], df.columns[j])
+            cursor.execute(
+                "INSERT INTO BONDINFO(BONDTYPE, BONDID, BONDDURATION, BONDYTM, TIMESTAMP) VALUES(%s, %s, %s, %s, %s)",
+                ('01', df.columns[j], '', df.iloc[i, j], df.index[i])
+            )
 
     #########中债农发行债数据导入############
     windData = w.edb("M1007661,M1007662,M1007663,M1007664,M1007665,M1007666,M1007667,M1007668,M1007669,M1007670,"
@@ -76,9 +107,17 @@ def insertData(request):
     # 包装成DataFrame
     # df = pd.DataFrame([windData.Data], columns = windData.Codes, index = windData.Times)
     df = pd.DataFrame(index=timeList)
-    for i in range(len(windData.Data)):
+    for i in range(len(windData.Codes)):
         df[windData.Codes[i]] = windData.Data[i]
-    print(df)
+    print(df, len(df.index), len(df.columns))
+    for i in range(0, len(df.index)):
+        for j in range(0, len(df.columns)):
+            print(i, j)
+            print(df.iloc[i, j], df.index[i], df.columns[j])
+            cursor.execute(
+                "INSERT INTO BONDINFO(BONDTYPE, BONDID, BONDDURATION, BONDYTM, TIMESTAMP) VALUES(%s, %s, %s, %s, %s)",
+                ('01', df.columns[j], '', df.iloc[i, j], df.index[i])
+            )
 
     w.stop()
 
