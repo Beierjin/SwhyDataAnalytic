@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
 
-    path('', views.test, name='test'),
+    path('', views.insertData, name='test'),
     #主报价页面
     # path('', quotes.loadPage, name='quotes'),
     # #主报价POST
