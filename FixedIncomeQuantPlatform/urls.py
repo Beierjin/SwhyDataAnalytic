@@ -14,15 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from OptionQuotes import get_data, quotes, TQuotes, urls
+from django.urls import path
 from django.conf.urls import url
-import OptionQuotes
-
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('hello/', get_data.GetDatafromWind),
-    path('quotes/', include('OptionQuotes.urls')),
-    path('FixedIncome/', include('FixedIncomeQuantPlatform.urls')),
+
+    path('', views.test, name='test'),
+    #主报价页面
+    # path('', quotes.loadPage, name='quotes'),
+    # #主报价POST
+    # path('updateQuotes/', quotes.loadData, name='updateQuotes'),
+    # path('loadQuotes/', quotes.loadData, name='loadQuotes'),
+    # #T型报价页面
+    # path('TQuotes/<str:instrument>', TQuotes.loadPage, name='TQuotes'),
+    # #T型报价 POST
+    # path('TQuotes/loadTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
+    # path('TQuotes/updateTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
+
 ]
