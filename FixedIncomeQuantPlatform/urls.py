@@ -16,20 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from . import views
+from . import dao, dataAnalytic
 
 urlpatterns = [
 
-    path('', views.insertData, name='test'),
-    #主报价页面
-    # path('', quotes.loadPage, name='quotes'),
-    # #主报价POST
-    # path('updateQuotes/', quotes.loadData, name='updateQuotes'),
-    # path('loadQuotes/', quotes.loadData, name='loadQuotes'),
-    # #T型报价页面
-    # path('TQuotes/<str:instrument>', TQuotes.loadPage, name='TQuotes'),
-    # #T型报价 POST
-    # path('TQuotes/loadTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
-    # path('TQuotes/updateTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
+    path('', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
 
+    path('YTMAnalytic/', dataAnalytic.loadPage, name='loadYTMAnalytic'),
+    path('YTMAnalytic/loadData', dataAnalytic.loadData, name='loadData'),
 ]
