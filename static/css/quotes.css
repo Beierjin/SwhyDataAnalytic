@@ -6,11 +6,12 @@
     color: #4682B4;
     font-size: 27px;
     background-color: #050505;
-    padding-bottom: 0.4rem;
-    padding-top: 0.4rem;
 }
-.item-section_header img {
+.item-section_header.img {
     width: 5rem;
+    float:left;
+    padding-left:.6rem;
+    padding-bottom:.5rem;
 }
 .item-section ul{padding:.0rem}
 

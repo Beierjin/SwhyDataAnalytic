@@ -15,14 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from OptionQuotes import get_data, quotes, TQuotes, urls
-from django.conf.urls import url
-import OptionQuotes
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('hello/', get_data.GetDatafromWind),
+    #path('', )
     path('quotes/', include('OptionQuotes.urls')),
     path('FixedIncome/', include('FixedIncomeQuantPlatform.urls')),
 ]

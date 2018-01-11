@@ -1,0 +1,17 @@
+.container {
+  margin: 0 auto;
+  background: #ff70cd;
+  max-width: 100%;
+  font-size: 0;
+}
+.container .left, .container .center, .container .right {
+   display: inline-block;
+   font-size: 16px;
+   height: 200px;
+   line-height: 200px;
+   text-align:center;
+}
+.container .left, .container .right
+{
+  width: 20%;
+}

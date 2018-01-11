@@ -16,6 +16,7 @@
     <title>Highstock Example</title>
 
     <link href="/static/css/flexible.css" rel="stylesheet">
+    <link href="/static/css/public.css" rel="stylesheet">
     <script src="/static/js/flexible.js"></script>
     <style>
         html, body{
@@ -52,23 +53,30 @@
 
 <body>
 
-    <div id="container" style="height: 400px; min-width: 310px" class="container"></div>
+    <div style="height: 400px; min-width: 310px" class="container">
+         <div id="container" class="left">
+            Left
+        </div>
+        <div class="right">
+            Right
+        </div>
+    </div>
 
     <script type="text/javascript">
 
         $(function() {
-                 //进度条
-                /*
-                 $('body').mLoading({
+            //进度条
+            /*
+                $('body').mLoading({
                     text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
-                 });
-                 */
-                 //加载报价数据
-                 loadQuotesData()
+                });
+            */
+            //加载报价数据
+            loadQuotesData()
 
-                //刷新页面，每隔10秒刷新一次数据
-                //setInterval(refreshQuoteData,5000);
-            });
+            //刷新页面，每隔10秒刷新一次数据
+            //setInterval(refreshQuoteData,5000);
+        });
 
         function loadQuotesData(){
             var url = '/FixedIncome/YTMAnalytic/loadData'
@@ -87,6 +95,7 @@
 
         var loadData = function(data) {
             var seriesData = []
+
             //加载数据
             $.each(JSON.parse(data), function (i, item) {
                 //console.log(item);
