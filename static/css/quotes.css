@@ -9,7 +9,9 @@
     padding-bottom: 0.4rem;
     padding-top: 0.4rem;
 }
-.item-section_header img{width:10rem}
+.item-section_header img {
+    width: 5rem;
+}
 .item-section ul{padding:.0rem}
 
 .table{

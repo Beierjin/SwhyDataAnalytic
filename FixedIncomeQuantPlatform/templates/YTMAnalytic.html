@@ -87,12 +87,13 @@
 
         var loadData = function(data) {
             var seriesData = []
-            var dict = []
-
             //加载数据
             $.each(JSON.parse(data), function (i, item) {
                 //console.log(item);
-                seriesData[new Date(Date.parse(item.timestamp.replace(/-/g, "/")))] = parseFloat(item.bondytm);
+                seriesData.push([
+                    str2UTC(item.timestamp),
+                    parseFloat(item.bondytm)
+                ])
             });
             //创建图形
             console.log(seriesData)
@@ -101,6 +102,8 @@
         };
 
         function createCharts(data) {
+            //关闭UTC时间
+            Highcharts.setOptions({ global:{useUTC: false}});
             // Create the chart
             Highcharts.stockChart('container', {
                 rangeSelector: {
@@ -122,7 +125,7 @@
                     }
                 },
                 tooltip: {
-                    split: false
+                    split: false,
                 },
                 series: [{
                     name: 'USD to EUR',
@@ -145,6 +148,21 @@
             //关闭进度条
             //$('body').mLoading("hide");
         };
+
+        function str2UTC(str) {
+            date = new Date(Date.parse(str.replace(/-/g, "/")))
+            //组成UTC
+            var y =  date.getUTCFullYear();
+            var m = date.getUTCMonth() ;
+            var d = date.getUTCDate();
+            var h= date.getUTCHours();
+            var M = date.getUTCMinutes();
+            var s = date.getUTCSeconds();
+            //这里只选年月日，如有需要可以多选
+            var utc = Date.UTC(y,m,d);
+            return utc
+        }
+
         /*
         var quoteData = [{{ series|safe }}];
         console.log(quoteData)
