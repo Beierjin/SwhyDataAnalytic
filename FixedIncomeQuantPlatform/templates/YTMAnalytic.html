@@ -6,8 +6,8 @@
 <script src="/static/js/highstock.js" type="text/javascript"></script>
 <script src="/static/js/drag-panes.js" type="text/javascript"></script>
 <script src="/static/js/exporting.js" type="text/javascript"></script>
-<script src="/static/js/dark-unica.js" type="text/javascript"></script>
 <script src="/static/js/highcharts-zh_CN.js" type="text/javascript"></script>
+<script src="/static/js/public.js" type="text/javascript"></script>
 
 
 <head>
@@ -25,22 +25,12 @@
             position: relative;
             padding: 0;
             margin: 0;
-            overflow: hidden;
+            overflow: scroll;
         }
         body{
             background: #333;
         }
-        .container{
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: relative;
-            height: 100%;
-            max-width: 640px;
-            background-color: white;
-            margin: 0 auto;
-        }
         .block{
-
             margin: 0 auto;
             margin-top: 1.5625rem;
             width: 3.75rem;
@@ -53,14 +43,68 @@
 
 <body>
 
-    <div style="height: 400px; min-width: 310px" class="container">
-         <div id="container" class="left">
-            Left
-        </div>
-        <div class="right">
-            Right
-        </div>
-    </div>
+     <div class="div_tab_container">
+         <div class="tab-group">
+             <section id="tab1" title="Long Tab Name">
+                     <div id="container" class="container_highstock_left">
+                         Left
+                     </div>
+             </section>
+             <section id="tab2" title="Another Tab">
+                 <h3>
+                     Content 2
+                 </h3>
+                 <p>
+                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
+                 </p>
+             </section>
+         </div>
+         <div class="tab-group">
+             <section id="tab1" title="Long Tab Name">
+                     <div id="container" class="container_highstock_left">
+                         Left
+                     </div>
+             </section>
+             <section id="tab2" title="Another Tab">
+                 <h3>
+                     Content 2
+                 </h3>
+                 <p>
+                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
+                 </p>
+             </section>
+         </div>
+         <div class="tab-group">
+             <section id="tab1" title="Long Tab Name">
+                     <div id="container" class="container_highstock_left">
+                         Left
+                     </div>
+             </section>
+             <section id="tab2" title="Another Tab">
+                 <h3>
+                     Content 2
+                 </h3>
+                 <p>
+                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
+                 </p>
+             </section>
+         </div>
+         <div class="tab-group">
+             <section id="tab1" title="Long Tab Name">
+                     <div id="container" class="container_highstock_left">
+                         Left
+                     </div>
+             </section>
+             <section id="tab2" title="Another Tab">
+                 <h3>
+                     Content 2
+                 </h3>
+                 <p>
+                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
+                 </p>
+             </section>
+         </div>
+     </div>
 
     <script type="text/javascript">
 
@@ -71,6 +115,8 @@
                     text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
                 });
             */
+            //加载标签栏
+            $('.tab-group').tabify();
             //加载报价数据
             loadQuotesData()
 
