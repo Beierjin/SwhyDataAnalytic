@@ -83,16 +83,16 @@ WSGI_APPLICATION = 'SwhyDataAnalytic.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'DataAnayicDB',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '50.2.68.188',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'DataAnayicDB',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': '50.2.68.188',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation

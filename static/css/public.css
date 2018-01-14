@@ -1,28 +1,33 @@
 /* 加tab页的div容器 */
 .div_tab_container {
-    position: relative;
+    position: absolute;
     background: white;
     padding: 3em;
     border-radius: 10px;
+    height: 100%;
 }
 /* ===========
    Tab Styling */
 .tab-group {
     position: relative;
     border: 1px solid #eee;
-    margin-top: 2.5em;
+    margin-top: 1rem;
     border-radius: 0 0 10px 10px;
+    width: 47%;
+    height: 45%;
+    float: left;
+    margin-left: 0.6rem;
 }
 .tab-group section {
     opacity: 0;
-    height: 0;
     padding: 0 1em;
     overflow: hidden;
     transition: opacity 0.4s ease, height 0.4s ease;
 }
 .tab-group section.active {
     opacity: 1;
-    height: auto;
+    /*根据父节点来设置高度*/
+    height: 100%;
     overflow: visible;
 }
 .tab-nav {
