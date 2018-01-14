@@ -18,26 +18,6 @@
     <link href="/static/css/flexible.css" rel="stylesheet">
     <link href="/static/css/public.css" rel="stylesheet">
     <script src="/static/js/flexible.js"></script>
-    <style>
-        html, body{
-            width: 100%;
-            height: 100%;
-            position: relative;
-            padding: 0;
-            margin: 0;
-            overflow: scroll;
-        }
-        body{
-            background: #333;
-        }
-        .block{
-            margin: 0 auto;
-            margin-top: 1.5625rem;
-            width: 3.75rem;
-            height: 1.875rem;
-            background-color: #0075a9;
-        }
-    </style>
 
 </head>
 
@@ -105,6 +85,15 @@
              </section>
          </div>
      </div>
+{#     <div class="combobox_container">#}
+{#            <h2>Orange + Medium</h2>#}
+{#         <select class="demo-3">#}
+{#			  <option value="sx">初中数学</option>#}
+{#			  <option value="yw">初中语文</option>#}
+{#			  <option value="yy">初中英语</option>#}
+{#			  <option value="wl">初中物理</option>#}
+{#         </select>#}
+{#     </div>#}
 
     <script type="text/javascript">
 
@@ -117,6 +106,16 @@
             */
             //加载标签栏
             $('.tab-group').tabify();
+            /*
+            //加载下拉框
+            $('.demo-3').selectMania({
+                size: 'small',
+		        themes: ['orange'],
+		        placeholder: 'Please select me!',
+			    removable: true,
+                search: true
+		    });
+		    */
             //加载报价数据
             loadQuotesData()
 
@@ -217,89 +216,6 @@
             var utc = Date.UTC(y,m,d);
             return utc
         }
-
-        /*
-        var quoteData = [{{ series|safe }}];
-        console.log(quoteData)
-
-        //split the data set into ohlc and volume
-        var ohlc = [];
-
-        console.log(ohlc)
-        $.each(quoteData[0], function(timeStamp, OHLC){
-           ohlc.push([
-                timeStamp, // the date
-                OHLC.open, // open
-                OHLC.high, // high
-                OHLC.low, // low
-                OHLC.close // close
-            ]);
-        });
-      //  debugger;
-        // create the chart
-        Highcharts.stockChart('container', {
-
-            rangeSelector: {
-                selected: 1
-            },
-
-            title: {
-                text: 'CU 价差'
-            },
-
-            xAxis: {
-                type: 'category',
-            },
-
-            yAxis: [{
-                labels: {
-                    align: 'right',
-                    x: -3
-                },
-                title: {
-                    text: 'OHLC'
-                },
-                height: '60%',
-                lineWidth: 2,
-                resize: {
-                    enabled: true
-                }
-            }, {
-                labels: {
-                    align: 'right',
-                    x: -3
-                },
-                title: {
-                    text: 'Volume'
-                },
-                top: '65%',
-                height: '35%',
-                offset: 0,
-                lineWidth: 2
-            }],
-
-            tooltip: {
-                split: true
-            },
-
-            series: [{
-                type: 'candlestick',
-                name: 'CU',
-                data: ohlc,
-                dataGrouping: {
-                    units: [
-                        [
-                            'week', // unit name
-                            [1] // allowed multiples
-                        ], [
-                            'month',
-                            [1, 2, 3, 4, 6]
-                        ]
-                    ]
-                }}
-            ]
-        });
-        */
     </script>
 
 
