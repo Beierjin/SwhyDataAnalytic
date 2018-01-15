@@ -35,13 +35,14 @@ body{
     border: 1px solid #eee;
     margin-top: 1rem;
     border-radius: 0 0 10px 10px;
-    width: 47%;
-    height: 60%;
+    width: 45%;
+    height: 50%;
     float: left;
     margin-left: 0.6rem;
 }
 .tab-group section {
     opacity: 0;
+    height: 0;
     padding: 0 1em;
     overflow: hidden;
     transition: opacity 0.4s ease, height 0.4s ease;
@@ -794,30 +795,10 @@ body{
 *******************************************************************************************/
 .container_highstock {
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     position: relative;
     height: 100%;
-    max-width: 640px;
+    width: 100%;
     background-color: white;
     margin: 0 auto;
-}
-.container_highstock_left, .container_highstock_right {
-    font-size: 16px;
-    line-height: 200px;
-    text-align: center;
-    height: 50%;
-}
-.container_highstock_left
-{
-    position: relative;
-    height: 100%;
-    background-color: white;
-}
-.container_highstock_right
-{
-    position: relative;
-    height: 100%;
-    max-width: 640px;
-    margin: 0 auto;
-    background-color: black;
 }

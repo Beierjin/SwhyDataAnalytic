@@ -30,7 +30,7 @@
         tabHTML = '<ul class="tab-nav">';
         $sections.each(function() {
           if ($(this).attr("title") && $(this).attr("id")) {
-            tabHTML += '<li><a href="#' + $(this).attr("id") + '">' + $(this).attr("title") + '</a></li>';
+            tabHTML += '<li><a href="#' + $(this).attr("id") + '" id="'+ $(this).attr("id") +'">' + $(this).attr("title") + '</a></li>';
           }
         });
         tabHTML += '</ul>';
