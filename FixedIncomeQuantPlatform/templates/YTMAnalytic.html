@@ -4,7 +4,6 @@
 <!--<script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>-->
 <script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="/static/js/highstock.js" type="text/javascript"></script>
-<script src="/static/js/drag-panes.js" type="text/javascript"></script>
 <script src="/static/js/exporting.js" type="text/javascript"></script>
 <script src="/static/js/highcharts-zh_CN.js" type="text/javascript"></script>
 <script src="/static/js/public.js" type="text/javascript"></script>
@@ -25,12 +24,36 @@
 
      <div class="div_tab_container">
          <div class="tab-group">
-             <section id="tab1" title="Long Tab Name">
-                     <div id="container" class="container_highstock_left">
+             <section id="tab1" title="中债农发行债">
+                     <div id="container" class="container_highstock">
                          Left
                      </div>
              </section>
-             <section id="tab2" title="Another Tab">
+             <section id="tab2" title="中债国债">
+                 <h3>
+                     Content 2
+                 </h3>
+                 <p>
+                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
+                 </p>
+             </section>
+             <section id="tab3" title="中债国开债">
+                 <h3>
+                     Content 2
+                 </h3>
+                 <p>
+                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
+                 </p>
+             </section>
+             <section id="tab4" title="FR007">
+                 <h3>
+                     Content 2
+                 </h3>
+                 <p>
+                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
+                 </p>
+             </section>
+             <section id="tab5" title="SHIBOR 3M">
                  <h3>
                      Content 2
                  </h3>
@@ -104,6 +127,17 @@
                     text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
                 });
             */
+            //初始化页面
+            init();
+            //加载报价数据
+            loadQuotesData();
+
+            //刷新页面，每隔10秒刷新一次数据
+            //setInterval(refreshQuoteData,5000);
+        });
+
+        function init()
+        {
             //加载标签栏
             $('.tab-group').tabify();
             /*
@@ -116,12 +150,7 @@
                 search: true
 		    });
 		    */
-            //加载报价数据
-            loadQuotesData()
-
-            //刷新页面，每隔10秒刷新一次数据
-            //setInterval(refreshQuoteData,5000);
-        });
+        }
 
         function loadQuotesData(){
             var url = '/FixedIncome/YTMAnalytic/loadData'
@@ -157,32 +186,46 @@
 
         function createCharts(data) {
             //关闭UTC时间
-            Highcharts.setOptions({ global:{useUTC: false}});
+            Highcharts.setOptions({
+                global:{useUTC: false},
+                //去除左上角的字体
+                lang: {
+                    rangeSelectorZoom: null
+                }
+            });
             // Create the chart
             Highcharts.stockChart('container', {
-                rangeSelector: {
-                    selected: 0
-                },
                 title: {
-                    text: 'USD to EUR exchange rate'
+                    //设置标题为空
+                    text: null
                 },
                 tooltip: {
-                    style: {
-                        width: '200px'
-                    },
-                    valueDecimals: 4,
-                    shared: true
+                    xDateFormat: '%Y-%m-%d',
+                    shared: true,
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: Date.UTC(2012, 0, 1),
+                        pointInterval: 24 * 3600 * 1000
+                    }
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
                 },
                 yAxis: {
                     title: {
-                        text: 'Exchange rate'
+                        text: '到期收益率'
                     }
                 },
-                tooltip: {
-                    split: false,
-                },
                 series: [{
-                    name: 'USD to EUR',
+                    name: 'YTM',
                     data: data,
                     id: 'dataseries'
                 // the event marker flags
@@ -192,7 +235,32 @@
                     onSeries: 'dataseries',
                     shape: 'circlepin',
                     width: 16
-                }]
+                }],
+                rangeSelector: {
+                    buttonTheme: {
+                        display: 'none' // 不显示按钮
+                    },
+                    selected: 0,
+                    inputEnabled: true // 不显示日期输入框
+                },
+                //添加切换久期的按钮
+                exporting: {
+                    buttons: {
+                        exportButton: {
+                            enabled: false
+                        },
+                        printButton: {
+                            enabled: false
+                        },
+                        customButton: {
+                             onclick: function () {
+                                alert('Clicked');
+                            },
+                            symbol: 'circle',
+                            menuItems: ['downloadPNG', 'downloadSVG', 'separator', 'label']
+                        }
+                    }
+                }
             });
         }
 

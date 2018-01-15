@@ -36,7 +36,7 @@ body{
     margin-top: 1rem;
     border-radius: 0 0 10px 10px;
     width: 47%;
-    height: 45%;
+    height: 60%;
     float: left;
     margin-left: 0.6rem;
 }
@@ -768,7 +768,7 @@ body{
      padding-left:1.5rem;
 }
 /* ################################################################## */
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 中型主题 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 主题 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* ################################################################## */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SELECTMANIA ELEMENT */
 .select-mania-theme-square .select-mania-inner { border-radius: 0; }
@@ -793,12 +793,15 @@ body{
 *******************            装载highstock控件的div        *********************************
 *******************************************************************************************/
 .container_highstock {
-    max-width: 50%;
-    font-size: 0;
-    height: 50%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    height: 100%;
+    max-width: 640px;
+    background-color: white;
+    margin: 0 auto;
 }
 .container_highstock_left, .container_highstock_right {
-    display: inline-block;
     font-size: 16px;
     line-height: 200px;
     text-align: center;
