@@ -24,6 +24,14 @@
 
      <div class="div_tab_container">
          <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
+             <div id="durationSelect" style="position:relative; margin-left: 0.4rem; margin-top: 0.4rem;">
+                <select id = "durationSelect" style="height: 0.5rem; ">
+                    <option value="volvo">Volvoooooo</option>
+                    <option value="saab">Saab</option>
+                    <option value="opel">Opel</option>
+                    <option value="audi">Audi</option>
+                </select>
+             </div>
              <section id="YTM_tab1" title="中债农发行债">
                  <div id="YTM_tab1_container" class="container_highstock">
                      Left
@@ -65,7 +73,7 @@
              </section>
          </div>
      </div>
-{#     <div class="combobox_container">#}
+{#    <div class="combobox_container">#}
 {#            <h2>Orange + Medium</h2>#}
 {#         <select class="demo-3">#}
 {#			  <option value="sx">初中数学</option>#}
@@ -101,16 +109,7 @@
         {
             //加载标签栏
             $('.tab-group').tabify();
-            /*
-            //加载下拉框
-            $('.demo-3').selectMania({
-                size: 'small',
-		        themes: ['orange'],
-		        placeholder: 'Please select me!',
-			    removable: true,
-                search: true
-		    });
-		    */
+
             $( "#tab2" ).on("click", function() {
                 alert(111);
             });
