@@ -134,3 +134,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'D:/Project/Python/SwhyDataAnalytic'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
+
+#POST/GET传输数据最大值
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240 # higher than the count of fields
+

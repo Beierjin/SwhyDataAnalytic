@@ -50,14 +50,14 @@
                  </div>
              </section>
          </div>
-         <div class="tab-group" id="YTMAnaltic" style="margin-top: 0.2rem; margin-left: 2rem">
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 0.2rem; margin-left: 1.2rem">
              <section id="YTMAnaltic_tab1" title="价差历史统计">
                  <div id="YTMAnaltic_tab1_container" class="container_highstock">
                      Left
                  </div>
              </section>
          </div>
-         <div class="tab-group" id="YTMSpread" style="margin-top: 0.5rem; margin-left: 0.2rem">
+         <div class="tab-group" id="YTMSpread" style="margin-top: 0.6rem; margin-left: 0.2rem">
              <section id="YTMSpread_tab1" title="价差走势">
                  <div id="YTMSpread_tab1_container" class="container_highstock">
                      Left
@@ -86,8 +86,12 @@
             */
             //初始化页面
             init();
-            //加载报价数据
-            loadQuotesData();
+
+            //对于每一个tab标签，初始化highstock
+            var tabList = {"#YTM_tab1":"中债农发行债", "#YTM_tab2":"中债国债",
+                "#YTM_tab3":"中债国开债", "YTM_tab4":"FR007", "#YTM_tab5":"SHIBOR 3M"};
+            var duration = "1Y", startTime = null, endTime = null;
+            loadYTMData("中债农发行债",duration, startTime, endTime);
 
             //刷新页面，每隔10秒刷新一次数据
             //setInterval(refreshQuoteData,5000);
@@ -112,11 +116,15 @@
             });
         }
 
-        function loadQuotesData(){
+        function loadYTMData(bondType, duration, startTime, endTime){
             var url = '/FixedIncome/YTMAnalytic/loadData'
             $.ajax({
                 type: 'POST',
                 data:{
+                    "bondType":bondType,
+                    "duration":duration,
+                    "startTime":startTime,
+                    "endTime":endTime
                 },
                 dataType: 'json',
                 url: url,
@@ -128,20 +136,28 @@
         }
 
         var loadData = function(data) {
-            var seriesData = []
-
+            var seriesData = [];
+            var arrayData = [];
             //加载数据
             $.each(JSON.parse(data), function (i, item) {
-                //console.log(item);
                 seriesData.push([
                     str2UTC(item.timestamp),
                     parseFloat(item.bondytm)
-                ])
+                ]);
+                arrayData.push([
+                    parseFloat(item.bondytm)
+                ]);
             });
-            //创建图形
+            /*******  创建图形  ******/
             console.log(seriesData)
             createCharts(seriesData)
             //$('body').mLoading("hide");
+
+            /*******  加载数据分析数据  ******/
+            //销毁变量，释放空间
+            delete seriesData
+            loadAnalysisData(arrayData)
+            //console.log(data);
         };
 
         function createCharts(data) {
@@ -227,6 +243,27 @@
                 }
             });
         }
+
+        /***** 数据分析函数 *****/
+        function loadAnalysisData(arrayData) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData'
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "arrayData[]":arrayData
+                },
+                dataType: 'json',
+                url: url,
+                success: loadAnalysis,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+         var loadAnalysis = function(data) {
+
+         };
 
         //错误信息处理界面
         var errorInfo = function(msg){
