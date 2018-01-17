@@ -24,14 +24,6 @@
 
      <div class="div_tab_container">
          <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
-             <div id="durationSelect" style="position:relative; margin-left: 0.4rem; margin-top: 0.4rem;">
-                <select id = "durationSelect" style="height: 0.5rem; ">
-                    <option value="volvo">Volvoooooo</option>
-                    <option value="saab">Saab</option>
-                    <option value="opel">Opel</option>
-                    <option value="audi">Audi</option>
-                </select>
-             </div>
              <section id="YTM_tab1" title="中债农发行债">
                  <div id="YTM_tab1_container" class="container_highstock">
                      Left
@@ -60,9 +52,25 @@
          </div>
          <div class="tab-group" id="YTMAnaltic" style="margin-top: 0.2rem; margin-left: 1.2rem">
              <section id="YTMAnaltic_tab1" title="价差历史统计">
-                 <div id="YTMAnaltic_tab1_container" class="container_highstock">
-                     Left
-                 </div>
+                 <!-- 债券期限选择框 -->
+                  <div  style="position:relative;">
+                      <div id="durationText" style="height: 0.5rem; float:left;margin-left: .2rem; margin-top: .29rem">
+                          债券期限：
+                      </div>
+                      <select id = "durationSelect" style="height: 0.5rem; margin-left: .1rem; margin-top: .2rem">
+                          <option value="volvo">Volvoooooo</option>
+                          <option value="saab">Saab</option>
+                          <option value="opel">Opel</option>
+                          <option value="audi">Audi</option>
+                      </select>
+                      <!-- 最新价差数据展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: .2rem">最新价差显示:</div>
+                      <!-- 昨结价差数据展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: .2rem">昨结价差显示:</div>
+                      <!-- 平均值，中位数展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">平均值:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">中位数:</div>
+                  </div>
              </section>
          </div>
          <div class="tab-group" id="YTMSpread" style="margin-top: 0.6rem; margin-left: 0.2rem">
