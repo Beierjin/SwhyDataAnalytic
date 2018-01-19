@@ -35,7 +35,7 @@ def GetQuotesDataFromTY():
     time_zone = 'Asia/Shanghai'
 
     #定价参数
-    tau = 1   #量
+    tau = 1   #期限
     r = 0.015     #无风险利率
 
     #初始化同余API

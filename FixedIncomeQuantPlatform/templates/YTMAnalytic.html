@@ -70,6 +70,15 @@
                       <!-- 平均值，中位数展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">平均值:</div>
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">中位数:</div>
+                      <!-- 偏离平均值，百分位数展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离平均值:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">百分位数:</div>
+                      <!-- 标准差，最大值展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">标准差:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">最大值:</div>
+                      <!-- 偏离标准差，最小值展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离标准差:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">最小值:</div>
                   </div>
              </section>
          </div>
@@ -117,14 +126,15 @@
         {
             //加载标签栏
             $('.tab-group').tabify();
-
+            //初始期限下拉框
+            selectInit('bondytmduration');
             $( "#tab2" ).on("click", function() {
                 alert(111);
             });
         }
 
         function loadYTMData(bondType, duration, startTime, endTime){
-            var url = '/FixedIncome/YTMAnalytic/loadData'
+            var url = '/FixedIncome/YTMAnalytic/loadData';
             $.ajax({
                 type: 'POST',
                 data:{
@@ -253,7 +263,7 @@
 
         /***** 数据分析函数 *****/
         function loadAnalysisData(arrayData) {
-            var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData'
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
             $.ajax({
                 type: 'POST',
                 data:{
@@ -271,6 +281,7 @@
          var loadAnalysis = function(data) {
 
          };
+
 
         //错误信息处理界面
         var errorInfo = function(msg){
@@ -291,6 +302,25 @@
             //这里只选年月日，如有需要可以多选
             var utc = Date.UTC(y,m,d);
             return utc
+        }
+
+        function selectInit(codeType) {
+             //初始下拉框
+            var url = '/publicMethod/getSYSCode';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "codeType":codeType,
+                },
+                dataType: 'json',
+                url: url,
+                success: function (data) {
+
+                },
+                error: errorInfo,
+                //采用异步
+                async: false
+            });
         }
     </script>
 
