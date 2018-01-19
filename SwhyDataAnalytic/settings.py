@@ -83,16 +83,16 @@ WSGI_APPLICATION = 'SwhyDataAnalytic.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'DataAnayicDB',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': '50.2.68.188',
-#         'PORT': '5432',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'DataAnayicDB',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': '50.2.68.188',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
@@ -133,4 +133,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'D:/Project/Python/SwhyDataAnalytic'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+
+#POST/GET传输数据最大值
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240 # higher than the count of fields
 

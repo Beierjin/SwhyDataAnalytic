@@ -4,7 +4,6 @@
 <!--<script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>-->
 <script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="/static/js/highstock.js" type="text/javascript"></script>
-<script src="/static/js/drag-panes.js" type="text/javascript"></script>
 <script src="/static/js/exporting.js" type="text/javascript"></script>
 <script src="/static/js/highcharts-zh_CN.js" type="text/javascript"></script>
 <script src="/static/js/public.js" type="text/javascript"></script>
@@ -24,68 +23,74 @@
 <body>
 
      <div class="div_tab_container">
-         <div class="tab-group">
-             <section id="tab1" title="Long Tab Name">
-                     <div id="container" class="container_highstock_left">
-                         Left
-                     </div>
+         <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
+             <section id="YTM_tab1" title="中债农发行债">
+                 <div id="YTM_tab1_container" class="container_highstock">
+                     Left
+                 </div>
              </section>
-             <section id="tab2" title="Another Tab">
-                 <h3>
-                     Content 2
-                 </h3>
-                 <p>
-                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
-                 </p>
+             <section id="YTM_tab2" title="中债国债">
+                 <div id="YTM_tab2_container" class="container_highstock">
+                     Left
+                 </div>
              </section>
-         </div>
-         <div class="tab-group">
-             <section id="tab1" title="Long Tab Name">
-                     <div id="container" class="container_highstock_left">
-                         Left
-                     </div>
+             <section id="YTM_tab3" title="中债国开债">
+                 <div id="YTM_tab3_container" class="container_highstock">
+                     Left
+                 </div>
              </section>
-             <section id="tab2" title="Another Tab">
-                 <h3>
-                     Content 2
-                 </h3>
-                 <p>
-                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
-                 </p>
+             <section id="YTM_tab4" title="FR007">
+                 <div id="YTM_tab4_container" class="container_highstock">
+                     Left
+                 </div>
+             </section>
+             <section id="YTM_tab5" title="SHIBOR 3M">
+                 <div id="YTM_tab5_container" class="container_highstock">
+                     Left
+                 </div>
              </section>
          </div>
-         <div class="tab-group">
-             <section id="tab1" title="Long Tab Name">
-                     <div id="container" class="container_highstock_left">
-                         Left
-                     </div>
-             </section>
-             <section id="tab2" title="Another Tab">
-                 <h3>
-                     Content 2
-                 </h3>
-                 <p>
-                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
-                 </p>
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 0.2rem; margin-left: 1.2rem">
+             <section id="YTMAnaltic_tab1" title="价差历史统计">
+                 <!-- 债券期限选择框 -->
+                  <div  style="position:relative;">
+                      <div id="durationText" style="height: 0.5rem; float:left;margin-left: .2rem; margin-top: .29rem">
+                          债券期限：
+                      </div>
+                      <select id = "durationSelect" style="height: 0.5rem; margin-left: .1rem; margin-top: .2rem">
+                          <option value="volvo">Volvoooooo</option>
+                          <option value="saab">Saab</option>
+                          <option value="opel">Opel</option>
+                          <option value="audi">Audi</option>
+                      </select>
+                      <!-- 最新价差数据展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: .2rem">最新价差显示:</div>
+                      <!-- 昨结价差数据展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: .2rem">昨结价差显示:</div>
+                      <!-- 平均值，中位数展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">平均值:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">中位数:</div>
+                      <!-- 偏离平均值，百分位数展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离平均值:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">百分位数:</div>
+                      <!-- 标准差，最大值展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">标准差:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">最大值:</div>
+                      <!-- 偏离标准差，最小值展示 -->
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离标准差:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">最小值:</div>
+                  </div>
              </section>
          </div>
-         <div class="tab-group">
-             <section id="tab1" title="Long Tab Name">
-                     <div id="container" class="container_highstock_left">
-                         Left
-                     </div>
-             </section>
-             <section id="tab2" title="Another Tab">
-                 <h3>
-                     Content 2
-                 </h3>
-                 <p>
-                     Donec congue ligula non risus dictum, eget vehicula diam mattis. Pellentesque at ante ipsum. Suspendisse rutrum elementum dolor, non congue risus sagittis id.
-                 </p>
+         <div class="tab-group" id="YTMSpread" style="margin-top: 0.6rem; margin-left: 0.2rem">
+             <section id="YTMSpread_tab1" title="价差走势">
+                 <div id="YTMSpread_tab1_container" class="container_highstock">
+                     Left
+                 </div>
              </section>
          </div>
      </div>
-{#     <div class="combobox_container">#}
+{#    <div class="combobox_container">#}
 {#            <h2>Orange + Medium</h2>#}
 {#         <select class="demo-3">#}
 {#			  <option value="sx">初中数学</option>#}
@@ -104,30 +109,39 @@
                     text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
                 });
             */
-            //加载标签栏
-            $('.tab-group').tabify();
-            /*
-            //加载下拉框
-            $('.demo-3').selectMania({
-                size: 'small',
-		        themes: ['orange'],
-		        placeholder: 'Please select me!',
-			    removable: true,
-                search: true
-		    });
-		    */
-            //加载报价数据
-            loadQuotesData()
+            //初始化页面
+            init();
+
+            //对于每一个tab标签，初始化highstock
+            var tabList = {"#YTM_tab1":"中债农发行债", "#YTM_tab2":"中债国债",
+                "#YTM_tab3":"中债国开债", "YTM_tab4":"FR007", "#YTM_tab5":"SHIBOR 3M"};
+            var duration = "1Y", startTime = null, endTime = null;
+            loadYTMData("中债农发行债",duration, startTime, endTime);
 
             //刷新页面，每隔10秒刷新一次数据
             //setInterval(refreshQuoteData,5000);
         });
 
-        function loadQuotesData(){
-            var url = '/FixedIncome/YTMAnalytic/loadData'
+        function init()
+        {
+            //加载标签栏
+            $('.tab-group').tabify();
+            //初始期限下拉框
+            selectInit('bondytmduration');
+            $( "#tab2" ).on("click", function() {
+                alert(111);
+            });
+        }
+
+        function loadYTMData(bondType, duration, startTime, endTime){
+            var url = '/FixedIncome/YTMAnalytic/loadData';
             $.ajax({
                 type: 'POST',
                 data:{
+                    "bondType":bondType,
+                    "duration":duration,
+                    "startTime":startTime,
+                    "endTime":endTime
                 },
                 dataType: 'json',
                 url: url,
@@ -139,50 +153,72 @@
         }
 
         var loadData = function(data) {
-            var seriesData = []
-
+            var seriesData = [];
+            var arrayData = [];
             //加载数据
             $.each(JSON.parse(data), function (i, item) {
-                //console.log(item);
                 seriesData.push([
                     str2UTC(item.timestamp),
                     parseFloat(item.bondytm)
-                ])
+                ]);
+                arrayData.push([
+                    parseFloat(item.bondytm)
+                ]);
             });
-            //创建图形
+            /*******  创建图形  ******/
             console.log(seriesData)
             createCharts(seriesData)
             //$('body').mLoading("hide");
+
+            /*******  加载数据分析数据  ******/
+            //销毁变量，释放空间
+            delete seriesData
+            loadAnalysisData(arrayData)
+            //console.log(data);
         };
 
         function createCharts(data) {
             //关闭UTC时间
-            Highcharts.setOptions({ global:{useUTC: false}});
+            Highcharts.setOptions({
+                global:{useUTC: false},
+                //去除左上角的字体
+                lang: {
+                    rangeSelectorZoom: null
+                }
+            });
             // Create the chart
-            Highcharts.stockChart('container', {
-                rangeSelector: {
-                    selected: 0
-                },
+            Highcharts.stockChart('YTM_tab1_container', {
                 title: {
-                    text: 'USD to EUR exchange rate'
+                    //设置标题为空
+                    text: null
                 },
                 tooltip: {
-                    style: {
-                        width: '200px'
-                    },
-                    valueDecimals: 4,
-                    shared: true
+                    xDateFormat: '%Y-%m-%d',
+                    shared: true,
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: Date.UTC(2012, 0, 1),
+                        pointInterval: 24 * 3600 * 1000
+                    }
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
                 },
                 yAxis: {
                     title: {
-                        text: 'Exchange rate'
+                        text: '到期收益率'
                     }
                 },
-                tooltip: {
-                    split: false,
-                },
                 series: [{
-                    name: 'USD to EUR',
+                    name: 'YTM',
                     data: data,
                     id: 'dataseries'
                 // the event marker flags
@@ -192,9 +228,60 @@
                     onSeries: 'dataseries',
                     shape: 'circlepin',
                     width: 16
-                }]
+                }],
+                rangeSelector: {
+                    buttonTheme: {
+                        display: 'none' // 不显示按钮
+                    },
+                    selected: 0,
+                    inputEnabled: true // 不显示日期输入框
+                },
+                //添加切换久期的按钮
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled:false,
+                            menuItems: [{
+                                text: 'Download PDF',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'application/pdf'
+                                    });
+                                }
+                            }, {
+                                text: 'Print',
+                                onclick: function () {
+                                    alert('Launch Print Table function')
+                                },
+                                separator: false
+                            }]
+                        }
+                    }
+                }
             });
         }
+
+        /***** 数据分析函数 *****/
+        function loadAnalysisData(arrayData) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "arrayData[]":arrayData
+                },
+                dataType: 'json',
+                url: url,
+                success: loadAnalysis,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+         var loadAnalysis = function(data) {
+
+         };
+
 
         //错误信息处理界面
         var errorInfo = function(msg){
@@ -215,6 +302,25 @@
             //这里只选年月日，如有需要可以多选
             var utc = Date.UTC(y,m,d);
             return utc
+        }
+
+        function selectInit(codeType) {
+             //初始下拉框
+            var url = '/publicMethod/getSYSCode';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "codeType":codeType,
+                },
+                dataType: 'json',
+                url: url,
+                success: function (data) {
+
+                },
+                error: errorInfo,
+                //采用异步
+                async: false
+            });
         }
     </script>
 

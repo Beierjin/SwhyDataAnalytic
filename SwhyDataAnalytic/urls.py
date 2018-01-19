@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import publicMethod
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('', )
+
     path('quotes/', include('OptionQuotes.urls')),
     path('FixedIncome/', include('FixedIncomeQuantPlatform.urls')),
+
+    #公共方法
+    path('publicMethod/getSYSCode', publicMethod.getSysCode, name='getSysCode'),
 ]
