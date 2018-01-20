@@ -58,10 +58,7 @@
                           债券期限：
                       </div>
                       <select id = "durationSelect" style="height: 0.5rem; margin-left: .1rem; margin-top: .2rem">
-                          <option value="volvo">Volvoooooo</option>
-                          <option value="saab">Saab</option>
-                          <option value="opel">Opel</option>
-                          <option value="audi">Audi</option>
+                          <option value="00">--选择期限--</option>
                       </select>
                       <!-- 最新价差数据展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: .2rem">最新价差显示:</div>
@@ -127,7 +124,7 @@
             //加载标签栏
             $('.tab-group').tabify();
             //初始期限下拉框
-            selectInit('bondytmduration');
+            selectInit($("#durationSelect"),'bondytmduration');
             $( "#tab2" ).on("click", function() {
                 alert(111);
             });
@@ -304,7 +301,8 @@
             return utc
         }
 
-        function selectInit(codeType) {
+        //obj为标签栏id(格式$("#se"))，codetype为sys_code中code类型的名称
+        function selectInit(obj,codeType) {
              //初始下拉框
             var url = '/publicMethod/getSYSCode';
             $.ajax({
@@ -315,7 +313,15 @@
                 dataType: 'json',
                 url: url,
                 success: function (data) {
-
+                    data = JSON.parse(data);
+                    //根据data返回值初始化下拉框
+                    for(var i=0;i<data.length;i++){
+                        var opt=$("<option>");
+                        alert(data[i].val);
+                        opt.val(data[i].val);
+                        opt.text(data[i].text);
+                        obj.append(opt);
+                    }
                 },
                 error: errorInfo,
                 //采用异步
