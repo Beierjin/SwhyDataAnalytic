@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import re, datetime, os, json, math
+import re, datetime, os, json, math, time
 import pandas as pd
 from django.http import JsonResponse
 # from WindPy import w
@@ -13,6 +13,7 @@ contractListFileDir = baseDir + '/files/BasicInfo/contractList.xlsx'
 print(baseDir)
 contractList = list(pd.read_excel(contractListFileDir)['contract'])
 contractName = list(pd.read_excel(contractListFileDir)['name'])
+#contractExchanges = list(pd.read_excel(contractListFileDir)['exchanges'])
 contractList = dict(zip(contractList, contractName))
 
 
@@ -21,11 +22,11 @@ def loadPage(request):
 
 def loadData(request):
     #获取同余数据
-    quoteData = GetQuotesDataFromTY()
+    quoteData = GetQuotesDataFromTY(request)
     return JsonResponse(quoteData, safe=False)
 
 
-def GetQuotesDataFromTY():
+def GetQuotesDataFromTY(request):
 
     quoteData = {}
 
@@ -34,8 +35,15 @@ def GetQuotesDataFromTY():
     yesterday = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
     time_zone = 'Asia/Shanghai'
 
+#    selected_date = time.strptime('%Y-%m-%d', request.post["selectdate"])
+
+#    if(selected_date == today):
+#        today = selected_date
+#        yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+
+
     #定价参数
-    tau = 1   #期限
+    tau = 0.08214   #量
     r = 0.015     #无风险利率
 
     #初始化同余API
@@ -83,4 +91,6 @@ def GetQuotesDataFromTY():
     quoteData = [(k,quoteData[k]) for k in sorted(quoteData.keys())]
     print(quoteData)
 
+
     return quoteData
+

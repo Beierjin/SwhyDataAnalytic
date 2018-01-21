@@ -9,11 +9,32 @@
         <script src="/static/js/flexible_css.debug.js"></script>
         <script src="/static/js/flexible.debug.js"></script>
         <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/jquery-1.9.1.js"></script>
+        <script src="/static/js/ui_1.10.4_jquery-ui.js"></script>
         <script src="/static/js/jquery.mloading.js"></script>
-        <title>申万宏源FICC</title>
         <link href="/static/css/quotes.css" rel="stylesheet" type="text/css">
         <link href="/static/css/jquery.mloading.css" rel="stylesheet" type="text/css">
 
+        <link rel="stylesheet" href="/static/css/ui_1.10.4_jquery-ui.css">
+
+
+        <script>
+            $(function() {
+                $( "#datepicker" ).datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    showButtonPanel: true,
+                    autoSize: true,
+                    closeText: "完成", // Display text for close link
+                    currentText: "返回", // Display text for current month link
+                    monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
+                    dayNamesMin: ["日","一","二","三","四","五","六"], // Column headings for days starting at Sunday
+                    dateFormat: "yy-mm-dd",
+                });
+            });
+        </script>
+
+        <title>申万宏源FICC</title>
         <style>
             html,body{
                 height: 100vh;
@@ -28,7 +49,13 @@
             <div class="item-section" data-repeat="sections">
                 <div class="item-section_header">
                     <h2><img src="/static/image/swhylogo.png" style="width:6rem; float:left;"></h2>
-{#                    <h2>申万宏源证券有限公司--期权报价</h2>#}
+{#                     <h2>申万宏源证券有限公司--期权报价</h2>#}
+                </div>
+                <div class="item-section_header">
+                <form action="" method="post" class="calender-body_right">
+                    <label style="color: #5b80b2">平值期权</label>
+                    <input type="text" value="当日" name="dateselect" id="datepicker">
+                </form>
                 </div>
 
                 <table id="optionTable" class="table">

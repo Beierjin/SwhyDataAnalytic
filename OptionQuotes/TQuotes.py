@@ -26,6 +26,11 @@ def GetTQuotesData(request, instrument):
     tau = 1  # 量
     r = 0.015  # 无风险利率
 
+#    qixian = request.POST['qixian']
+
+#    if(qixian != 1):
+#        tau = qixian
+
     # 初始化同余API
     tyApi = TYApi.TYApi()
 
@@ -101,3 +106,12 @@ def getForwardList(forward):
 
     return forwardList
 
+#def get_contract(request, Exchanges_id):
+#    # 根据传递的交易所找到该交易所对应的合约
+#    contracts = Contract.objects.filter(exchanges_id=Exchanges_id)
+#    result = []
+#    for i in contracts:
+#        # 对应的id和合约名称组成一个字典
+#        result.append({'id':i.id, 'name':i.name})
+#    # 返回json数据
+#    return HttpResponse(json.dumps(result), content_type="application/json")
