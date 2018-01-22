@@ -25,9 +25,7 @@
      <div class="div_tab_container">
          <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
              <section id="YTM_tab1" title="中债农发行债">
-                 <div id="YTM_tab1_container" class="container_highstock">
-                     Left
-                 </div>
+                 <div id="YTM_tab1_container" class="container_highstock"></div>
              </section>
              <section id="YTM_tab2" title="中债国债">
                  <div id="YTM_tab2_container" class="container_highstock">
@@ -57,7 +55,7 @@
                       <div id="durationText" style="height: 0.5rem; float:left;margin-left: .2rem; margin-top: .29rem">
                           债券期限：
                       </div>
-                      <select id = "durationSelect" style="height: 0.5rem; margin-left: .1rem; margin-top: .2rem">
+                      <select id = "durationSelect" style="height: 0.5rem; margin-left: .1rem; margin-top: .2rem;">
                           <option value="00">--选择期限--</option>
                       </select>
                       <!-- 最新价差数据展示 -->
@@ -123,10 +121,31 @@
         {
             //加载标签栏
             $('.tab-group').tabify();
+
             //初始期限下拉框
             selectInit($("#durationSelect"),'bondytmduration');
-            $( "#tab2" ).on("click", function() {
-                alert(111);
+
+            //绑定下拉框选择事件
+            $("#durationSelect").change(function(){
+                //弹出下拉框内容
+                //alert($(this).children('option:selected').text());
+                //获取标签页内容
+                //console.log($('.tab-group section.active').get(0).title);
+                var duration = $(this).children('option:selected').text();
+                var bondName = $('.tab-group section.active').get(0).title
+                var startTime = null, endTime = null;
+                loadYTMData(bondName,duration, startTime, endTime);
+            });
+
+            $( "#YTM_tab1" ).on("click", function() {
+                //alert(111);
+                var duration = '1Y'
+                var bondName = $('.tab-group section.active').get(0).title;
+                {#var id = $('.tab-group section.active').get(0).id#}
+                {#alert(id)#}
+                {#$("#YTM_tab1").attr('title','aaa')#}
+                var startTime = null, endTime = null;
+                loadYTMData(bondName, duration, startTime, endTime);
             });
         }
 
@@ -317,7 +336,6 @@
                     //根据data返回值初始化下拉框
                     for(var i=0;i<data.length;i++){
                         var opt=$("<option>");
-                        alert(data[i].val);
                         opt.val(data[i].val);
                         opt.text(data[i].text);
                         obj.append(opt);
