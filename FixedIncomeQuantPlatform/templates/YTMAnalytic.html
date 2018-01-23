@@ -171,8 +171,7 @@
                 duration[0] = $("#durationSelect1").children('option:selected').text();
                 duration[1] = $("#durationSelect2").children('option:selected').text();
                 var startTime = null, endTime = null;
-                console.log(bondType, duration)
-                getBondYTMDiffCacl(bondType,duration, startTime, endTime);
+                getBondYTMDiffCacl(bondType,duration, startTime, endTime, 'YTMSpread_tab2_container');
             });
             /*  获取标签页名称的方法
             $( "#YTM_tab1" ).on("click", function() {
@@ -236,6 +235,58 @@
             //console.log(data);
         };
 
+        /***** 价差分析函数 *****/
+        function getBondYTMDiffCacl(bondType,duration, startTime, endTime, containerName) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "bondType[]":bondType,
+                    "duration[]":duration,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    'containerName':containerName
+                },
+                dataType: 'json',
+                url: url,
+                success: loadDiffCacl,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+        var loadDiffCacl = function(data) {
+            var seriesData = [];
+            var arrayData = [];
+            //解析json数据
+            console.log(data)
+            data = JSON.parse(data) ;
+            //取出债券名称
+            var bondType = data.bondType;
+            var containerName = data.containerName;
+            //加载数据
+            $.each(data.quoteData, function (i, item) {
+                seriesData.push([
+                    str2UTC(item.timestamp),
+                    parseFloat(item.bondytm)
+                ]);
+                arrayData.push([
+                    parseFloat(item.bondytm)
+                ]);
+            });
+            alert(containerName);
+            /*******  创建图形  ******/
+            createCharts(seriesData, bondType, containerName)
+            //$('body').mLoading("hide");
+
+            /*******  加载数据分析数据  ******/
+            //销毁变量，释放空间
+            delete seriesData
+            loadAnalysisData(arrayData)
+            //console.log(data);
+         };
+
         /***** 数据分析函数 *****/
         function loadAnalysisData(arrayData) {
             var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
@@ -257,29 +308,6 @@
 
          };
 
-        /***** 价差分析函数 *****/
-        function getBondYTMDiffCacl(bondType,duration, startTime, endTime) {
-            var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    "bondType[]":bondType,
-                    "duration[]":duration,
-                    "startTime":startTime,
-                    "endTime":endTime
-                },
-                dataType: 'json',
-                url: url,
-                success: loadDiffCacl,
-                error: errorInfo,
-                //采用异步
-                async: true
-            });
-        }
-
-        var loadDiffCacl = function(data) {
-
-         };
 
         //错误信息处理界面
         var errorInfo = function(msg){

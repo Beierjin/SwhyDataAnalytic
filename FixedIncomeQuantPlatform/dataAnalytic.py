@@ -48,24 +48,30 @@ def getBondYTMAnalyicData(request):
     return
 
 def getBondYTMDiffCacl(request):
+    quoteData = {}
     #抽取request中数据
-    # 抽取request中数据
     if (request.method == 'POST'):
         try:
             bondType = request.POST.getlist('bondType[]')
             duration = request.POST.getlist('duration[]')
             startTime = request.POST['startTime']
             endTime = request.POST['endTime']
+            containerName = request.POST['containerName']
         except Exception as e:
             print("get request error, ret = %s" % e.args[0])
 
     #获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
     YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
     YTMData2 = getBondYTMData(bondType[1], duration[1], startTime, endTime)
-    from collections import Counter
-    diffData = dict(Counter(YTMData1).bondytm - Counter(YTMData2).bondytm)
-    #diffData = list(map(lambda x: x[0] - x[1], zip(YTMData1, YTMData2)))
-    return JsonResponse(json.dumps(diffData, ensure_ascii=False, sort_keys=True), safe=False)
+    diffData = dictMinus(YTMData1, YTMData2)
+    # 获取YTM数据
+    quoteData['quoteData'] = diffData
+    # 存储债券名称
+    quoteData['bondType'] = '价差--'+ bondType[0] + '和' + bondType[1]
+    # 存储container的名字
+    quoteData['containerName'] = containerName
+    print(quoteData)
+    return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 def getBondYTMData(bondType, duration, startTime, endTime):
     print(bondType, duration, startTime, endTime)
@@ -99,3 +105,14 @@ def list2dict(keys, values):
         #时间戳作为keys
         dictData[str(value[1])] = row
     return dictData
+
+def dictMinus(dict1, dict2):
+    diffDict = {}
+    for k, v in dict2.items():
+        if k in dict1.keys():
+            data = {}
+            data['bondytm'] = (float(dict1[k]['bondytm']) - float(v['bondytm']))
+            data['timestamp'] = k
+            diffDict[k] = data
+
+    return diffDict
