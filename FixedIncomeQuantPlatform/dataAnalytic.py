@@ -8,6 +8,7 @@ def loadPage(request):
     return render(request, 'YTMAnalytic.html')
 
 def loadData(request):
+    quoteData = {}
     #抽取request中数据
     if(request.method == 'POST'):
         try:
@@ -18,7 +19,9 @@ def loadData(request):
         except Exception as e:
             print("get request error, ret = %s" % e.args[0])
     #获取同余数据
-    quoteData = getBondYTMData(bondType, duration, startTime, endTime)
+    quoteData['quoteData'] = getBondYTMData(bondType, duration, startTime, endTime)
+    #存储债券名称
+    quoteData['bondType'] = bondType
     print(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
@@ -33,6 +36,9 @@ def getBondYTMAnalyicData(request):
     #存储类型转换
     arrayData = np.array(arrayData)
     arrayData = arrayData.astype(np.float)
+    arrayData = [data for data in arrayData if str(data) != 'nan']
+
+    #获取各种数据指标
 
     #获取各种数组值
     print(arrayData)
