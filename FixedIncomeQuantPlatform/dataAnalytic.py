@@ -16,12 +16,15 @@ def loadData(request):
             duration = request.POST['duration']
             startTime = request.POST['startTime']
             endTime = request.POST['endTime']
+            containerName = request.POST['containerName']
         except Exception as e:
             print("get request error, ret = %s" % e.args[0])
-    #获取同余数据
+    #获取YTM数据
     quoteData['quoteData'] = getBondYTMData(bondType, duration, startTime, endTime)
     #存储债券名称
     quoteData['bondType'] = bondType
+    #存储container的名字
+    quoteData['containerName'] = containerName
     print(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
@@ -44,13 +47,33 @@ def getBondYTMAnalyicData(request):
     print(arrayData)
     return
 
+def getBondYTMDiffCacl(request):
+    #抽取request中数据
+    # 抽取request中数据
+    if (request.method == 'POST'):
+        try:
+            bondType = request.POST.getlist('bondType[]')
+            duration = request.POST.getlist('duration[]')
+            startTime = request.POST['startTime']
+            endTime = request.POST['endTime']
+        except Exception as e:
+            print("get request error, ret = %s" % e.args[0])
+
+    #获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
+    YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
+    YTMData2 = getBondYTMData(bondType[1], duration[1], startTime, endTime)
+    from collections import Counter
+    diffData = dict(Counter(YTMData1).bondytm - Counter(YTMData2).bondytm)
+    #diffData = list(map(lambda x: x[0] - x[1], zip(YTMData1, YTMData2)))
+    return JsonResponse(json.dumps(diffData, ensure_ascii=False, sort_keys=True), safe=False)
+
 def getBondYTMData(bondType, duration, startTime, endTime):
     print(bondType, duration, startTime, endTime)
     #建立数据库连接
     cursor = connection.cursor()
     #查询数据
     try:
-        cursor.execute("select bondytm.bondid, bondytm.bondduration, bondytm.bondytm, bondytm.timestamp, sys_code.codename"
+        cursor.execute("select bondytm.bondytm, bondytm.timestamp"
                        " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
                        "and bondytm.bondytmtype = sys_code.code and sys_code.codename = %s "
                        "and bondytm.bondduration = %s ORDER BY bondytm.timestamp DESC", (bondType, duration))
@@ -61,7 +84,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
     listData = cursor.fetchall()
     cursor.close()
     #类型转换
-    keys = ['bondid', 'bondduration', 'bondytm', 'timestamp', 'codename']
+    keys = ['bondytm', 'timestamp']
     dictData = list2dict(keys, listData)
     # dictData = [(k, dictData[k]) for k in sorted(dictData.keys())]
     return dictData
@@ -74,5 +97,5 @@ def list2dict(keys, values):
         for i in range(0, len(keys)):
             row[keys[i]] = str(value[i])
         #时间戳作为keys
-        dictData[str(value[3])] = row
+        dictData[str(value[1])] = row
     return dictData
