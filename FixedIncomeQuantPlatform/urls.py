@@ -25,4 +25,5 @@ urlpatterns = [
     path('YTMAnalytic/', dataAnalytic.loadPage, name='loadYTMAnalytic'),
     path('YTMAnalytic/loadData', dataAnalytic.loadData, name='loadData'),
     path('YTMAnalytic/getBondYTMAnalyicData', dataAnalytic.getBondYTMAnalyicData, name='getBondYTMAnalyicData'),
+    path('YTMAnalytic/getBondYTMDiffCacl', dataAnalytic.getBondYTMDiffCacl, name='getBondYTMDiffCacl'),
 ]

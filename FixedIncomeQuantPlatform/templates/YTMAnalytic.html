@@ -24,49 +24,56 @@
 
      <div class="div_tab_container">
          <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
-             <section id="YTM_tab1" title="中债农发行债">
-                 <div id="YTM_tab1_container" class="container_highstock">
-                     Left
-                 </div>
+             <section id="YTM_tab1" title="债券走势图1">
+                 <div id="YTM_tab1_container" class="container_highstock"></div>
              </section>
-             <section id="YTM_tab2" title="中债国债">
-                 <div id="YTM_tab2_container" class="container_highstock">
-                     Left
-                 </div>
+             <section id="YTM_tab2" title="债券走势图2">
+                 <div id="YTM_tab2_container" class="container_highstock"></div>
              </section>
-             <section id="YTM_tab3" title="中债国开债">
-                 <div id="YTM_tab3_container" class="container_highstock">
-                     Left
-                 </div>
-             </section>
-             <section id="YTM_tab4" title="FR007">
-                 <div id="YTM_tab4_container" class="container_highstock">
-                     Left
-                 </div>
-             </section>
-             <section id="YTM_tab5" title="SHIBOR 3M">
-                 <div id="YTM_tab5_container" class="container_highstock">
-                     Left
+         </div>
+         <div class="tab-group" id="YTMSpread" style="margin-top: 0.2rem; margin-left: 0.2rem">
+             <section id="YTMSpread_tab2" title="债券价差图">
+                 <div id="YTMSpread_tab2_container" class="container_highstock">
                  </div>
              </section>
          </div>
-         <div class="tab-group" id="YTMAnaltic" style="margin-top: 0.2rem; margin-left: 1.2rem">
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%;">
              <section id="YTMAnaltic_tab1" title="价差历史统计">
-                 <!-- 债券期限选择框 -->
+                 <!-- 债券选择框1 -->
                   <div  style="position:relative;">
-                      <div id="durationText" style="height: 0.5rem; float:left;margin-left: .2rem; margin-top: .29rem">
-                          债券期限：
+                      <div id="bondName1" style="height: 0.5rem; float:left; margin-left: .4rem; margin-top: .29rem">
+                          债券1--类型：
                       </div>
-                      <select id = "durationSelect" style="height: 0.5rem; margin-left: .1rem; margin-top: .2rem">
-                          <option value="volvo">Volvoooooo</option>
-                          <option value="saab">Saab</option>
-                          <option value="opel">Opel</option>
-                          <option value="audi">Audi</option>
+                      <select id = "bondNameSelect1" style="height: 0.5rem; float:left; margin-left: .1rem; margin-top: .2rem;">
+                          <option value="00">--选择债券--</option>
                       </select>
+                      <div id="durationText1" style="height: 0.5rem; float:left; margin-left: 1rem; margin-top: .29rem">
+                          债券1--期限：
+                      </div>
+                      <select id = "durationSelect1" style="height: 0.5rem; float:left; margin-left: .1rem; margin-top: .2rem;">
+                          <option value="00">--选择期限--</option>
+                      </select>
+                      <!-- 债券选择框2 -->
+                      <div id="bondName2" style="height: 0.5rem; float:left; margin-left: 2rem; margin-top: .29rem">
+                          债券2--类型：
+                      </div>
+                      <select id = "bondNameSelect2" style="height: 0.5rem; float:left; margin-left: .1rem; margin-top: .2rem;">
+                          <option value="00">--选择债券--</option>
+                      </select>
+                      <div id="durationText2" style="height: 0.5rem; float:left; margin-left: 1rem; margin-top: .29rem">
+                          债券2--期限：
+                      </div>
+                      <select id = "durationSelect2" style="height: 0.5rem; float:left; margin-left: .1rem; margin-top: .2rem;">
+                          <option value="00">--选择期限--</option>
+                      </select>
+                      <button id="diffCacl" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 2rem; margin-top: .2rem;">分析价差</button>
+                  </div>
+
+                  <div style="position:relative;">
                       <!-- 最新价差数据展示 -->
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: .2rem">最新价差显示:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: .4rem">最新价差显示:</div>
                       <!-- 昨结价差数据展示 -->
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: .2rem">昨结价差显示:</div>
+                      <div style="position:relative; margin-top: 0.3rem; margin-left: .4rem">昨结价差显示:</div>
                       <!-- 平均值，中位数展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">平均值:</div>
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">中位数:</div>
@@ -80,13 +87,6 @@
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离标准差:</div>
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">最小值:</div>
                   </div>
-             </section>
-         </div>
-         <div class="tab-group" id="YTMSpread" style="margin-top: 0.6rem; margin-left: 0.2rem">
-             <section id="YTMSpread_tab1" title="价差走势">
-                 <div id="YTMSpread_tab1_container" class="container_highstock">
-                     Left
-                 </div>
              </section>
          </div>
      </div>
@@ -111,12 +111,13 @@
             */
             //初始化页面
             init();
-
+            /*
             //对于每一个tab标签，初始化highstock
-            var tabList = {"#YTM_tab1":"中债农发行债", "#YTM_tab2":"中债国债",
+            var tabList = {"中债农发行债", "#YTM_tab2":"中债国债",
                 "#YTM_tab3":"中债国开债", "YTM_tab4":"FR007", "#YTM_tab5":"SHIBOR 3M"};
+            */
             var duration = "1Y", startTime = null, endTime = null;
-            loadYTMData("中债农发行债",duration, startTime, endTime);
+            loadYTMData("中债农发行债",duration, startTime, endTime, 'YTM_tab1_container');
 
             //刷新页面，每隔10秒刷新一次数据
             //setInterval(refreshQuoteData,5000);
@@ -126,14 +127,66 @@
         {
             //加载标签栏
             $('.tab-group').tabify();
+
+            //初始债券类型下拉框
+            selectInit($("#bondNameSelect1"),'bondytmtype');
+            selectInit($("#bondNameSelect2"),'bondytmtype');
             //初始期限下拉框
-            selectInit('bondytmduration');
-            $( "#tab2" ).on("click", function() {
-                alert(111);
+            selectInit($("#durationSelect1"),'bondytmduration');
+            selectInit($("#durationSelect2"),'bondytmduration');
+
+            //绑定债券类型下拉框选择事件
+            $("#bondNameSelect1").change(function(){
+                var duration = $("#durationSelect1").children('option:selected').text();
+                var bondType = $(this).children('option:selected').text();
+                var startTime = null, endTime = null;
+                loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab1_container');
             });
+            $("#bondNameSelect2").change(function(){
+                var duration = $("#durationSelect2").children('option:selected').text();
+                var bondType = $(this).children('option:selected').text();
+                var startTime = null, endTime = null;
+                loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab2_container');
+            });
+
+            //绑定期限下拉框选择事件
+            $("#durationSelect1").change(function(){
+                var duration = $(this).children('option:selected').text();
+                var bondType = $("#bondNameSelect1").children('option:selected').text();
+                var startTime = null, endTime = null;
+                loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab1_container');
+            });
+            $("#durationSelect2").change(function(){
+                var duration = $(this).children('option:selected').text();
+                var bondType = $("#bondNameSelect2").children('option:selected').text();
+                var startTime = null, endTime = null;
+                loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab2_container');
+            });
+
+            //绑定价差分析按钮
+            $( "#diffCacl" ).click(function() {
+                var bondType = [], duration = [];
+                bondType[0] = $("#bondNameSelect1").children('option:selected').text();
+                bondType[1] = $("#bondNameSelect2").children('option:selected').text();
+                duration[0] = $("#durationSelect1").children('option:selected').text();
+                duration[1] = $("#durationSelect2").children('option:selected').text();
+                var startTime = null, endTime = null;
+                getBondYTMDiffCacl(bondType,duration, startTime, endTime, 'YTMSpread_tab2_container');
+            });
+            /*  获取标签页名称的方法
+            $( "#YTM_tab1" ).on("click", function() {
+                var duration = '1Y'
+                var bondName = $('.tab-group section.active').get(0).title;
+                {#var id = $('.tab-group section.active').get(0).id#}
+                {#alert(id)#}
+                {#$("#YTM_tab1").attr('title','aaa')#}
+                var startTime = null, endTime = null;
+                loadYTMData(bondName, duration, startTime, endTime);
+            });
+            */
         }
 
-        function loadYTMData(bondType, duration, startTime, endTime){
+        function loadYTMData(bondType, duration, startTime, endTime, containerName){
             var url = '/FixedIncome/YTMAnalytic/loadData';
             $.ajax({
                 type: 'POST',
@@ -141,7 +194,8 @@
                     "bondType":bondType,
                     "duration":duration,
                     "startTime":startTime,
-                    "endTime":endTime
+                    "endTime":endTime,
+                    'containerName':containerName
                 },
                 dataType: 'json',
                 url: url,
@@ -155,8 +209,13 @@
         var loadData = function(data) {
             var seriesData = [];
             var arrayData = [];
+            //解析json数据
+            data = JSON.parse(data) ;
+            //取出债券名称
+            var bondType = data.bondType;
+            var containerName = data.containerName;
             //加载数据
-            $.each(JSON.parse(data), function (i, item) {
+            $.each(data.quoteData, function (i, item) {
                 seriesData.push([
                     str2UTC(item.timestamp),
                     parseFloat(item.bondytm)
@@ -166,8 +225,7 @@
                 ]);
             });
             /*******  创建图形  ******/
-            console.log(seriesData)
-            createCharts(seriesData)
+            createCharts(seriesData, bondType, containerName)
             //$('body').mLoading("hide");
 
             /*******  加载数据分析数据  ******/
@@ -177,20 +235,108 @@
             //console.log(data);
         };
 
-        function createCharts(data) {
-            //关闭UTC时间
+        /***** 价差分析函数 *****/
+        function getBondYTMDiffCacl(bondType,duration, startTime, endTime, containerName) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "bondType[]":bondType,
+                    "duration[]":duration,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    'containerName':containerName
+                },
+                dataType: 'json',
+                url: url,
+                success: loadDiffCacl,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+        var loadDiffCacl = function(data) {
+            var seriesData = [];
+            var arrayData = [];
+            //解析json数据
+            console.log(data)
+            data = JSON.parse(data) ;
+            //取出债券名称
+            var bondType = data.bondType;
+            var containerName = data.containerName;
+            //加载数据
+            $.each(data.quoteData, function (i, item) {
+                seriesData.push([
+                    str2UTC(item.timestamp),
+                    parseFloat(item.bondytm)
+                ]);
+                arrayData.push([
+                    parseFloat(item.bondytm)
+                ]);
+            });
+            alert(containerName);
+            /*******  创建图形  ******/
+            createCharts(seriesData, bondType, containerName)
+            //$('body').mLoading("hide");
+
+            /*******  加载数据分析数据  ******/
+            //销毁变量，释放空间
+            delete seriesData
+            loadAnalysisData(arrayData)
+            //console.log(data);
+         };
+
+        /***** 数据分析函数 *****/
+        function loadAnalysisData(arrayData) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "arrayData[]":arrayData
+                },
+                dataType: 'json',
+                url: url,
+                success: loadAnalysis,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+         var loadAnalysis = function(data) {
+
+         };
+
+
+        //错误信息处理界面
+        var errorInfo = function(msg){
+            console.log(msg);
+            //关闭进度条
+            //$('body').mLoading("hide");
+        };
+
+        function createCharts(data, bondType, containerName) {
+            //关闭UTC时间,设置title格式
             Highcharts.setOptions({
                 global:{useUTC: false},
                 //去除左上角的字体
                 lang: {
                     rangeSelectorZoom: null
+                },
+                title: { align: 'left', x: 5, y: 20,
+	                style: {
+                        fontSize: '20px',
+                        color: '#304354',
+  	                    fontWeight: 'bold',
+                    }
                 }
             });
             // Create the chart
-            Highcharts.stockChart('YTM_tab1_container', {
+            Highcharts.stockChart(containerName, {
                 title: {
-                    //设置标题为空
-                    text: null
+                    //设置标题
+                    text : bondType,
                 },
                 tooltip: {
                     xDateFormat: '%Y-%m-%d',
@@ -261,35 +407,6 @@
             });
         }
 
-        /***** 数据分析函数 *****/
-        function loadAnalysisData(arrayData) {
-            var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    "arrayData[]":arrayData
-                },
-                dataType: 'json',
-                url: url,
-                success: loadAnalysis,
-                error: errorInfo,
-                //采用异步
-                async: true
-            });
-        }
-
-         var loadAnalysis = function(data) {
-
-         };
-
-
-        //错误信息处理界面
-        var errorInfo = function(msg){
-            console.log(msg);
-            //关闭进度条
-            //$('body').mLoading("hide");
-        };
-
         function str2UTC(str) {
             date = new Date(Date.parse(str.replace(/-/g, "/")))
             //组成UTC
@@ -304,7 +421,8 @@
             return utc
         }
 
-        function selectInit(codeType) {
+        //obj为标签栏id(格式$("#se"))，codetype为sys_code中code类型的名称
+        function selectInit(obj,codeType) {
              //初始下拉框
             var url = '/publicMethod/getSYSCode';
             $.ajax({
@@ -315,7 +433,14 @@
                 dataType: 'json',
                 url: url,
                 success: function (data) {
-
+                    data = JSON.parse(data);
+                    //根据data返回值初始化下拉框
+                    for(var i=0;i<data.length;i++){
+                        var opt=$("<option>");
+                        opt.val(data[i].val);
+                        opt.text(data[i].text);
+                        obj.append(opt);
+                    }
                 },
                 error: errorInfo,
                 //采用异步
