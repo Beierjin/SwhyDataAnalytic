@@ -89,8 +89,8 @@ DATABASES = {
         'NAME': 'DataAnayicDB',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '50.2.68.188',
-        'PORT': '5432',
+        'HOST': '219.141.171.202',
+        'PORT': '15900',
     }
 }
 

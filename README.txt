@@ -16,5 +16,7 @@ ctrl+a d
 进入
 screen -r
 
+压缩上一版本
+tar -zcvf /usr/local/SwhyDataAnalytic.tar.gz /usr/local/SwhyDataAnalytic
 
 
