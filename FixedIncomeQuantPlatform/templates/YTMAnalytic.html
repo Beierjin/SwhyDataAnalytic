@@ -222,6 +222,14 @@
                 searchFields: 'value text subtitle right'
             });
 
+            //绑定生成矩阵按钮
+            $( "#generateDiffMatrix" ).click(function() {
+                var bondType = $("#bondYTMTypeMultiSelect").children('option:selected').map(function() {
+                    return $(this).text();
+                }).get();
+                console.log(typeof(bondType.join()));
+            });
+
         }
 
         /***** 债券走势图 *****/

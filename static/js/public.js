@@ -91,7 +91,6 @@ function str2UTC(str) {
 function selectInit(obj,codeType) {
     //初始下拉框
     var url = '/publicMethod/getSYSCode';
-    debugger;
     $.ajax({
         type: 'POST',
         data:{
