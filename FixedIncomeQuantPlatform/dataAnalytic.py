@@ -155,7 +155,6 @@ def getBondYTMAnalyicData(request):
 
     print(quoteData)
 
-
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 def getBondYTMData(bondType, duration, startTime, endTime):
