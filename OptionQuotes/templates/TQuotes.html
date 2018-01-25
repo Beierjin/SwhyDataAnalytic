@@ -8,7 +8,8 @@
         <meta content="telephone=no,email=no" name="format-detection">
         <script src="/static/js/flexible_css.debug.js"></script>
         <script src="/static/js/flexible.debug.js"></script>
-        <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+        <script src="/static/js/public.js" type="text/javascript"></script>
         <script src="/static/js/jquery-1.9.1.js"></script>
         <script src="/static/js/ui_1.10.4_jquery-ui.js"></script>
         <script src="/static/js/jquery.mloading.js"></script>
@@ -26,6 +27,8 @@
                     selectOtherMonths: true,
                     showButtonPanel: true,
                     autoSize: true,
+                    prevText: "<", // Display text for previous month link
+		            nextText: ">", // Display text for next month link
                     closeText: "完成", // Display text for close link
                     currentText: "返回", // Display text for current month link
                     monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
@@ -51,50 +54,29 @@
                     <h2>申万宏源证券有限公司--期权报价</h2>
                 </div>
 
-                            <form action="" method="post" class="calender-body_left">
+                            <form action="" class="calender-body_left">
                             <label style="color: #5b80b2">交易所</label>
-                                <select name="Exchanges">
-                                    <option value="DCE">大连商品交易所</option>
-                                    <option value="SHF">上海期货交易所</option>
-                                    <option value="CZC">郑州商品交易所</option>
+                                <select id="ExchangeSelect">
+                                    <option value="00" id="id_exchange">--选择交易所--</option>
                                 </select>
                                 <label style="color: #5b80b2">挂钩标的</label>
-                                <select name="ContractList">
-                                    <option value="a">A1805</option>
-                                    <option value="b">A805</option>
+                                <select id="ContractListSelect">
+                                    <option value="00" id='id_contract'>--选择期货--</option>
                                 </select>
                             </form>
-                            <form action="" method="post" class="calender-body_right">
+                            <form action="" method="POST"  class="calender-body_right">
                                 <label style="color: #5b80b2">期限</label>
-                                <select name="qixian">
+                                <select id="qixian" name="qixianSelect">
                                     <option value="1">1个月</option>
-                                    <option value="3">3个月</option>
-                                    <option value="6">6个月</option>
-                                    <option value="12">12个月</option>
                                 </select>
-                                 日期<input type="text" value="当日" name="dateselect" id="datepicker">
+                                 日期<input type="text" value="当日" style="text-align: center" name="dateselect" id="datepicker">
                             </form>
 
-                 <!-- <div class="form-group">
-                    <label for="id_province" class="control-label">选择省市</label>
-                    <select class="form-control" id="id_province" name="province">
-                        <option selected="selected">请选择</option>
-                        {% for foo in exchangeslist %}
-                            <option value="{{ foo.id }}">{{ foo.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="id_city" class="control-label">选择城市</label>
-                    <select class="form-control" id="id_city" name="city">
-                        <option selected="selected">请选择</option>
-                    </select>
-                </div>-->
 
                 <table id="optionTable" class="table">
                     <tr id="tableTitle">
                         <th class="table-th" colspan="2" style = "background-color: red">看涨</th>
-                        <th class="table-th" id = 'insturment' style = "background-color: black">forward</th>
+                        <th class="table-th" id = 'instrument' style = "background-color: black">forward</th>
                         <th class="table-th" colspan="2" style = "background-color: #008B00">看跌</th>
                     </tr>
 
@@ -119,18 +101,58 @@
                  });
 
                  //获取合约号
-                 var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
+                 var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length);
+
+
+                 //初始化选择框
+                 init(instrument);
 
                  //加载报价数据
-                 loadQuotesData(instrument)
+                 loadQuotesData(instrument);
 
                  //刷新页面，每隔10秒刷新一次数据
                  //setInterval(refreshQuoteData(instrument),5000);
                  window.setInterval(refreshQuoteData,5000,instrument);
 
              });
+
+             function init(instrument) {
+                 document.getElementById("id_contract").innerHTML=instrument.substr(0, instrument.indexOf('.'));
+                 document.getElementById("id_exchange").innerHTML=instrument.substr(-3, 3);
+                 //初始合约名称下拉框
+                 selectInit($("#ExchangeSelect"),'quoteexchanges');
+                 //selectInit($("#ContractListSelect"),'contractname');
+                 selectInit($("#qixian"),'qixian');
+
+                 //绑定交易所下拉框
+                 $("#ExchangeSelect").change(function(){
+                     var exchanges = $(this).children('option:selected').text();
+                     selectInit($("#ContractListSelect"),'contractname'+ exchanges);
+                 });
+                 //绑定期限合约下拉框
+                 $("#ContractListSelect").change(function(){
+                     var qixian = $("#qixian").children('option:selected').val();
+                     var exchanges = $("#ExchangeSelect").children('option:selected').text();
+                     var contractname = $(this).children('option:selected').text();
+                     var dateselect = $("#datepicker").text();
+                     loadTQuoteData(exchanges, contractname, qixian, dateselect);
+                 });
+                 $("#qixian").change(function(){
+                     var qixian = $(this).children('option:selected').val();
+                     var exchanges = $("#ExchangeSelect").children('option:selected').text();
+                     var contractname = $("#ContractListSelect").children('option:selected').text();
+                     var dateselect = $("#datepicker").text();
+                     loadTQuoteData(exchanges, contractname,qixian, dateselect);
+                 });
+             }
+
+             function loadTQuoteData(exchange, contractname, qixian, dateselect){
+                 var instrument = contractname;
+                 loadQuotesData(instrument)
+             }
+
              function loadQuotesData(instrument){
-                 var url = '/quotes/TQuotes/loadTQuotes/' + instrument
+                 var url = '/quotes/TQuotes/loadTQuotes/' + instrument;
                  $.ajax({
                      type: 'POST',
                      data:{
@@ -174,7 +196,7 @@
                          '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:' + putColor + '">' + item[1].pricingPutBid + '</td>').hide().fadeIn(1000);
                      $('#optionTable').append(newRow);
                 });
-                changeFont('insturment', data.forward, 'White');
+                changeFont('instrument', data.forward, 'White');
                 $('body').mLoading("hide");
              };
 
@@ -210,7 +232,7 @@
                     changeFont(itemId+'pricingBid', item[1].pricingBid, fontColor);
                 });
                 */
-                changeFont('insturment', data.forward, 'White');
+                changeFont('instrument', data.forward, 'White');
             };
 
             // 更改内容渐变字体,#####需要判断修改的数值是否有变化#####
@@ -236,6 +258,34 @@
                     callback.apply(null,args);
                 }
                 __sto(_cb,timeout);
+            }
+
+            //obj为标签栏id(格式$("#se"))
+            function selectInit(obj,codeType) {
+             //初始下拉框
+                var url = '/publicMethod/getSYSCode';
+                $.ajax({
+                    type: 'POST',
+                    data:{
+                        "codeType":codeType,
+                    },
+                    dataType: 'json',
+                    url: url,
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        //根据data返回值初始化下拉框
+                        obj.empty();
+                        for(var i=0;i<data.length;i++){
+                            var opt=$("<option>");
+                            opt.val(data[i].val);
+                            opt.text(data[i].text);
+                            obj.append(opt);
+                        }
+                    },
+                    error: errorInfo,
+                    //采用异步
+                    async: false
+                });
             }
 
         </script>
