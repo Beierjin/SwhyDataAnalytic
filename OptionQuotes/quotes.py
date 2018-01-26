@@ -13,7 +13,6 @@ contractListFileDir = baseDir + '/files/BasicInfo/contractList.xlsx'
 print(baseDir)
 contractList = list(pd.read_excel(contractListFileDir)['contract'])
 contractName = list(pd.read_excel(contractListFileDir)['name'])
-#contractExchanges = list(pd.read_excel(contractListFileDir)['exchanges'])
 contractList = dict(zip(contractList, contractName))
 
 
@@ -35,16 +34,20 @@ def GetQuotesDataFromTY(request):
     yesterday = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
     time_zone = 'Asia/Shanghai'
 
-#    selected_date = time.strptime('%Y-%m-%d', request.post["selectdate"])
-
-#    if(selected_date == today):
-#        today = selected_date
-#        yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
-
 
     #定价参数
     tau = 0.08214   #量
     r = 0.015     #无风险利率
+
+    if (request.method == 'POST'):
+        try:
+            tau = int(request.POST["qixian"])
+            if(dateselect):
+                selected_date = time.strptime('%Y-%m-%d', request.POST["dateselect"])
+                today = selected_date
+                yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+        except Exception as e:
+            print("get request error, ret = %s" % e.args[0])
 
     #初始化同余API
     tyApi = TYApi.TYApi()

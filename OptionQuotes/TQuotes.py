@@ -30,6 +30,10 @@ def GetTQuotesData(request, instrument):
         try:
             qixian = request.POST["qixian"]
             tau = int(qixian) / 12
+            if (dateselect):
+                selected_date = time.strptime('%Y-%m-%d', request.POST["dateselect"])
+                today = selected_date
+                yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         except Exception as e:
             print("get request error, ret = %s" % e.args[0])
 
