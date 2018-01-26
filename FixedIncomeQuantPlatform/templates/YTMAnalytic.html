@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--引用静态文件 -->
+{% load staticfiles %}
 <!--<script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>-->
-<script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>
-<script src="/static/js/highstock.js" type="text/javascript"></script>
-<script src="/static/js/exporting.js" type="text/javascript"></script>
-<script src="/static/js/highcharts-zh_CN.js" type="text/javascript"></script>
-<script src="/static/js/public.js" type="text/javascript"></script>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/highstock.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/exporting.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/highcharts-zh_CN.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/public.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/flexible.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/fm.selectator.jquery.js' %}" type="text/javascript"></script>
 
 
 <head>
@@ -14,9 +18,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Highstock Example</title>
 
-    <link href="/static/css/flexible.css" rel="stylesheet">
-    <link href="/static/css/public.css" rel="stylesheet">
-    <script src="/static/js/flexible.js"></script>
+    <link href="{% static 'css/flexible.css' %}" rel="stylesheet">
+    <link href="{% static 'css/public.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
 
 </head>
 
@@ -37,7 +41,7 @@
                  </div>
              </section>
          </div>
-         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%;">
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%; height: 75%">
              <section id="YTMAnaltic_tab1" title="价差历史统计">
                  <!-- 债券选择框1 -->
                   <div  style="position:relative;">
@@ -54,7 +58,7 @@
                           <option value="00">--选择期限--</option>
                       </select>
                       <!-- 债券选择框2 -->
-                      <div id="bondName2" style="height: 0.5rem; float:left; margin-left: 2rem; margin-top: .29rem">
+                      <div id="bondName2" style="height: 0.5rem; float:left; margin-left: 1rem; margin-top: .29rem">
                           债券2--类型：
                       </div>
                       <select id = "bondNameSelect2" style="height: 0.5rem; float:left; margin-left: .1rem; margin-top: .2rem;">
@@ -66,39 +70,74 @@
                       <select id = "durationSelect2" style="height: 0.5rem; float:left; margin-left: .1rem; margin-top: .2rem;">
                           <option value="00">--选择期限--</option>
                       </select>
-                      <button id="diffCacl" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 2rem; margin-top: .2rem;">分析价差</button>
+                      <button id="diffCacl" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 1rem; margin-top: .2rem;">分析价差</button>
                   </div>
+                  <!-- 清除float样式 -->
+                  <div class="clear" ></div>
 
-                  <div style="position:relative;">
+                  <div style="position:relative; float:left;">
                       <!-- 最新价差数据展示 -->
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: .4rem">最新价差显示:</div>
+                      <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">最新价差显示:</div>
+                      <div id="latestDiffPrice" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">null</div>
+                      <div id="latestDiffDiff" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">null</div>
+                      <div id="latestDiffPercent" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">null</div>
+                      <!-- 清除float样式 -->
+                      <div class="clear" ></div>
+
                       <!-- 昨结价差数据展示 -->
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: .4rem">昨结价差显示:</div>
+                      <div style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">昨结价差显示:</div>
+                      <div id="lastDiffPrice" style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">null</div>
+                      <div style="position:relative; float:left; margin-top: 0.5rem; margin-left: 2rem;">今结价差：</div>
+                      <div id="lastDiffPercent" style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">null</div>
+                      <!-- 清除float样式 -->
+                      <div class="clear" ></div>
+
                       <!-- 平均值，中位数展示 -->
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">平均值:</div>
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">中位数:</div>
+                      <div style="position:relative; margin-top: 0.5rem; margin-left: 1rem; float:left;">平均值:</div>
+                      <div id="diffMean" style="position:relative; margin-top: 0.5rem; margin-left: .5rem; float:left;">null</div>
+                      <div style="position:relative; float:left; margin-top: 0.5rem; margin-left: 2.5rem;">中位数:</div>
+                      <div id="diffMedian" style="position:relative; margin-top: 0.5rem; margin-left: .5rem; float:left;">null</div>
+                      <!-- 清除float样式 -->
+                      <div class="clear" ></div>
+
                       <!-- 偏离平均值，百分位数展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离平均值:</div>
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">百分位数:</div>
+                      <div id="diffDeviateMean" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 2.05rem;">百分位数:</div>
+                      <div id="diffPercent" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <!-- 清除float样式 -->
+                      <div class="clear" ></div>
+
                       <!-- 标准差，最大值展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">标准差:</div>
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">最大值:</div>
+                      <div id="diffStandardDeviation" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 2.5rem;">最大值:</div>
+                      <div id="diffMax" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <!-- 清除float样式 -->
+                      <div class="clear" ></div>
+
                       <!-- 偏离标准差，最小值展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离标准差:</div>
-                      <div style="position:relative; margin-top: 0.3rem; margin-left: 5rem;">最小值:</div>
+                      <div id="diffDeviateStandardDeviation" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 2.05rem;">最小值:</div>
+                      <div id="diffMin" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <!-- 清除float样式 -->
+                      <div class="clear" ></div>
                   </div>
+
+                 <!-- 价差矩阵多选框 -->
+                 <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 1rem">
+                     <!-- 标题 -->
+                     <div style="float:left; margin-top: 0.15rem;">比价矩阵：</div>
+                     <!-- 债券类型多选框 -->
+                     <select id="bondYTMTypeMultiSelect" style="float:left; height: 0.5rem; width: 4rem; margin-left: .4rem" name="债券类型多选" multiple></select>
+                     <!-- 久期多选框 -->
+                     <select id="bondYTMDurationMultiSelect" style="float:left; margin-left: .4rem; height: 0.5rem; width: 4rem" name="债券期限多选" multiple></select>
+                     <button id="generateDiffMatrix" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 0.4rem;">生成矩阵</button>
+                 </div>
              </section>
          </div>
      </div>
-{#    <div class="combobox_container">#}
-{#            <h2>Orange + Medium</h2>#}
-{#         <select class="demo-3">#}
-{#			  <option value="sx">初中数学</option>#}
-{#			  <option value="yw">初中语文</option>#}
-{#			  <option value="yy">初中英语</option>#}
-{#			  <option value="wl">初中物理</option>#}
-{#         </select>#}
-{#     </div>#}
 
     <script type="text/javascript">
 
@@ -111,16 +150,9 @@
             */
             //初始化页面
             init();
-            /*
-            //对于每一个tab标签，初始化highstock
-            var tabList = {"中债农发行债", "#YTM_tab2":"中债国债",
-                "#YTM_tab3":"中债国开债", "YTM_tab4":"FR007", "#YTM_tab5":"SHIBOR 3M"};
-            */
             var duration = "1Y", startTime = null, endTime = null;
             loadYTMData("中债农发行债",duration, startTime, endTime, 'YTM_tab1_container');
 
-            //刷新页面，每隔10秒刷新一次数据
-            //setInterval(refreshQuoteData,5000);
         });
 
         function init()
@@ -173,21 +205,47 @@
                 var startTime = null, endTime = null;
                 getBondYTMDiffCacl(bondType,duration, startTime, endTime, 'YTMSpread_tab2_container');
             });
-            /*  获取标签页名称的方法
-            $( "#YTM_tab1" ).on("click", function() {
-                var duration = '1Y'
-                var bondName = $('.tab-group section.active').get(0).title;
-                {#var id = $('.tab-group section.active').get(0).id#}
-                {#alert(id)#}
-                {#$("#YTM_tab1").attr('title','aaa')#}
-                var startTime = null, endTime = null;
-                loadYTMData(bondName, duration, startTime, endTime);
+
+            /*
+            * 价差矩阵多选框初始化
+            * */
+            //债券类型
+            selectInit($("#bondYTMTypeMultiSelect"),'bondytmtype');
+            $('#bondYTMTypeMultiSelect').selectator({
+                showAllOptionsOnFocus: true,
+                searchFields: 'value text subtitle right'
             });
-            */
+            //债券期限
+            selectInit($("#bondYTMDurationMultiSelect"),'bondytmduration');
+            $('#bondYTMDurationMultiSelect').selectator({
+                showAllOptionsOnFocus: true,
+                searchFields: 'value text subtitle right'
+            });
+
+            //绑定生成矩阵按钮
+            $( "#generateDiffMatrix" ).click(function() {
+                var bondType = $("#bondYTMTypeMultiSelect").children('option:selected').map(function() {
+                    return $(this).text();
+                }).get();
+                console.log(typeof(bondType.join()));
+            });
+
         }
 
-        function loadYTMData(bondType, duration, startTime, endTime, containerName){
+        /***** 债券走势图 *****/
+        /*****
+         * bondtype 债券名称，例如“中债农发行债”
+         * duration 债券期限，例如“1Y”
+         * startTime 查询开始时间 默认null
+         * endTime 查询结束时间 默认null
+         * containerName 装载分析图的容器
+         * method 加载数据的方式，‘loadData’不包含价差分析函数loadAnalysisData， ‘loadDiff’包含价差分析函数，默认为‘loadData’
+         *
+         * */
+        function loadYTMData(bondType, duration, startTime, endTime, containerName, method){
             var url = '/FixedIncome/YTMAnalytic/loadData';
+            //给method赋默认参数
+            method = method ? method : 'loadData';
             $.ajax({
                 type: 'POST',
                 data:{
@@ -195,7 +253,32 @@
                     "duration":duration,
                     "startTime":startTime,
                     "endTime":endTime,
-                    'containerName':containerName
+                    'containerName':containerName,
+                    'method':method
+                },
+                dataType: 'json',
+                url: url,
+                success: loadData,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+        /***** 价差分析函数 *****/
+        function getBondYTMDiffCacl(bondType,duration, startTime, endTime, containerName, method) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
+            //给method赋默认参数
+            method = method ? method : 'loadDiff';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "bondType[]":bondType,
+                    "duration[]":duration,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    'containerName':containerName,
+                    'method':method
                 },
                 dataType: 'json',
                 url: url,
@@ -210,10 +293,12 @@
             var seriesData = [];
             var arrayData = [];
             //解析json数据
-            data = JSON.parse(data) ;
+            //data = JSON.parse(data);
+            data = eval('('+data+')')
             //取出债券名称
             var bondType = data.bondType;
             var containerName = data.containerName;
+            var method = data.method;
             //加载数据
             $.each(data.quoteData, function (i, item) {
                 seriesData.push([
@@ -231,61 +316,13 @@
             /*******  加载数据分析数据  ******/
             //销毁变量，释放空间
             delete seriesData
-            loadAnalysisData(arrayData)
+            //如果是价差分析，加载数据分析函数
+            if(method == 'loadDiff'){
+                loadAnalysisData(arrayData);
+            }
+
             //console.log(data);
         };
-
-        /***** 价差分析函数 *****/
-        function getBondYTMDiffCacl(bondType,duration, startTime, endTime, containerName) {
-            var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    "bondType[]":bondType,
-                    "duration[]":duration,
-                    "startTime":startTime,
-                    "endTime":endTime,
-                    'containerName':containerName
-                },
-                dataType: 'json',
-                url: url,
-                success: loadDiffCacl,
-                error: errorInfo,
-                //采用异步
-                async: true
-            });
-        }
-
-        var loadDiffCacl = function(data) {
-            var seriesData = [];
-            var arrayData = [];
-            //解析json数据
-            console.log(data)
-            data = JSON.parse(data) ;
-            //取出债券名称
-            var bondType = data.bondType;
-            var containerName = data.containerName;
-            //加载数据
-            $.each(data.quoteData, function (i, item) {
-                seriesData.push([
-                    str2UTC(item.timestamp),
-                    parseFloat(item.bondytm)
-                ]);
-                arrayData.push([
-                    parseFloat(item.bondytm)
-                ]);
-            });
-            alert(containerName);
-            /*******  创建图形  ******/
-            createCharts(seriesData, bondType, containerName)
-            //$('body').mLoading("hide");
-
-            /*******  加载数据分析数据  ******/
-            //销毁变量，释放空间
-            delete seriesData
-            loadAnalysisData(arrayData)
-            //console.log(data);
-         };
 
         /***** 数据分析函数 *****/
         function loadAnalysisData(arrayData) {
@@ -305,6 +342,54 @@
         }
 
          var loadAnalysis = function(data) {
+            console.log(data);
+            //解析json数据
+            data = JSON.parse(data) ;
+            //取出分析指标
+            var mean = data.mean;
+            var median = data.median;
+            var latestDiff = data.latestDiff;
+            var latestDiffDiff = data.latestDiffDiff;
+            var latestDiffPercent = (data.latestDiffPercent*100).toFixed(2) + '%';
+            var standardDeviation = data.standardDeviation;
+            var lastDiff = data.lastDiff;
+            var deviateMean = data.deviateMean;
+
+            //最新价差
+            if(latestDiffDiff < 0){
+               changeFont('latestDiffPrice', latestDiff, 'green');
+               changeFont('latestDiffDiff', latestDiffDiff, 'green');
+               changeFont('latestDiffPercent', latestDiffPercent, 'green');
+            }
+            else if(latestDiffDiff == 0) {
+               changeFont('latestDiffPrice', latestDiff, 'black');
+               changeFont('latestDiffDiff', latestDiffDiff, 'black');
+               changeFont('latestDiffPercent', latestDiffPercent, 'black');
+            }
+            else {
+               changeFont('latestDiffPrice', latestDiff, 'red');
+               changeFont('latestDiffDiff', latestDiffDiff, 'red');
+               changeFont('latestDiffPercent', latestDiffPercent, 'red');
+            }
+
+            //昨日价差
+            changeFont('lastDiffPrice', lastDiff, 'black');
+
+            //平均值，中位数展示
+            changeFont('diffMean', mean, 'black');
+            changeFont('diffMedian', median, 'black');
+
+            //偏离平均值，百分位数展示
+            changeFont('diffDeviateMean', deviateMean, 'black');
+            //changeFont('diffPercent', mean, 'black');
+
+            //标准差，最大值展示
+            changeFont('diffStandardDeviation', standardDeviation, 'black');
+            //changeFont('diffMax', mean, 'black');
+
+            //偏离标准差，最小值展示
+            //changeFont('diffDeviateStandardDeviation', mean, 'black');
+            //changeFont('diffMin', mean, 'black');
 
          };
 
@@ -407,46 +492,6 @@
             });
         }
 
-        function str2UTC(str) {
-            date = new Date(Date.parse(str.replace(/-/g, "/")))
-            //组成UTC
-            var y =  date.getUTCFullYear();
-            var m = date.getUTCMonth() ;
-            var d = date.getUTCDate();
-            var h= date.getUTCHours();
-            var M = date.getUTCMinutes();
-            var s = date.getUTCSeconds();
-            //这里只选年月日，如有需要可以多选
-            var utc = Date.UTC(y,m,d);
-            return utc
-        }
-
-        //obj为标签栏id(格式$("#se"))，codetype为sys_code中code类型的名称
-        function selectInit(obj,codeType) {
-             //初始下拉框
-            var url = '/publicMethod/getSYSCode';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    "codeType":codeType,
-                },
-                dataType: 'json',
-                url: url,
-                success: function (data) {
-                    data = JSON.parse(data);
-                    //根据data返回值初始化下拉框
-                    for(var i=0;i<data.length;i++){
-                        var opt=$("<option>");
-                        opt.val(data[i].val);
-                        opt.text(data[i].text);
-                        obj.append(opt);
-                    }
-                },
-                error: errorInfo,
-                //采用异步
-                async: false
-            });
-        }
     </script>
 
 
